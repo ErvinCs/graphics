@@ -25,7 +25,7 @@ public class View extends Canvas{
         displayImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         displayComponents = ((DataBufferByte)(displayImage.getRaster().getDataBuffer())).getData();
 
-        frameBuffer.clear((byte)0x50);
+        frameBuffer.clear((byte)0x00);
 
         // Configure display JFrame
         frame = new JFrame();
@@ -52,5 +52,9 @@ public class View extends Canvas{
         frameBuffer.copyToByteArray(displayComponents);
         graphics.drawImage(displayImage, 0, 0, frameBuffer.getWidth(), frameBuffer.getHeight(), null);
         bufferStrategy.show();
+    }
+
+    public Bitmap getFrameBuffer() {
+        return frameBuffer;
     }
 }
