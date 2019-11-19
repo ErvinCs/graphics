@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 // View Window
 public class View extends Canvas{
     private final JFrame frame;
-    private final Bitmap frameBuffer;
+    private final RenderContext frameBuffer;
     private final byte[] displayComponents; // The view components of the buffer image
     private final BufferedImage displayImage;
     private final BufferStrategy bufferStrategy;
@@ -21,7 +21,7 @@ public class View extends Canvas{
         setMinimumSize(size);
         setMaximumSize(size);
 
-        frameBuffer = new Bitmap(width, height);
+        frameBuffer = new RenderContext(width, height);
         displayImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         displayComponents = ((DataBufferByte)(displayImage.getRaster().getDataBuffer())).getData();
 
@@ -54,7 +54,7 @@ public class View extends Canvas{
         bufferStrategy.show();
     }
 
-    public Bitmap getFrameBuffer() {
+    public RenderContext getFrameBuffer() {
         return frameBuffer;
     }
 }
