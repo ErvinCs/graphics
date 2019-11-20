@@ -30,9 +30,11 @@ public class RenderContext extends Bitmap {
 
     public void fillTriangle(Vertex v1, Vertex v2, Vertex v3)
     {
-        Vertex minYVert = v1;
-        Vertex midYVert = v2;
-        Vertex maxYVert = v3;
+        // Normalize the coordinates
+        Matrix4f screenSpaceTransform = new Matrix4f().initScreenSpaceTransform(getWidth()/2, getHeight()/2);
+        Vertex minYVert = v1.transform(screenSpaceTransform).perspectiveDivide();
+        Vertex midYVert = v2.transform(screenSpaceTransform).perspectiveDivide();
+        Vertex maxYVert = v3.transform(screenSpaceTransform).perspectiveDivide();
 
         if(maxYVert.getY() < midYVert.getY())
         {
@@ -57,7 +59,8 @@ public class RenderContext extends Bitmap {
         int orientation = area >= 0 ? 1 : 0;
 
         scanConvertTriangle(minYVert, midYVert, maxYVert, orientation);
-        fillShape((int)minYVert.getY(), (int)maxYVert.getY());
+        // Using top-left ceil-convention
+        fillShape((int)Math.ceil(minYVert.getY()), (int)Math.ceil(maxYVert.getY()));
     }
 
     public void scanConvertTriangle(Vertex minYVert, Vertex midYVert, Vertex maxYVert, int orientation)
@@ -71,13 +74,14 @@ public class RenderContext extends Bitmap {
     // Assume the vertexes are sorted
     private void scanConertLine(Vertex minYVertex, Vertex maxYVertex, int side)
     {
-        int yStart = (int)minYVertex.getY();
-        int yEnd   = (int)maxYVertex.getY();
-        int xStart = (int)minYVertex.getX();
-        int xEnd   = (int)maxYVertex.getX();
+        // Using top-left ceil-convention
+        int yStart = (int)Math.ceil(minYVertex.getY());
+        int yEnd   = (int)Math.ceil(maxYVertex.getY());
+        int xStart = (int)Math.ceil(minYVertex.getX());
+        int xEnd   = (int)Math.ceil(maxYVertex.getX());
 
-        int yDist = yEnd - yStart;
-        int xDist = xEnd - xStart;
+        float yDist = maxYVertex.getY() - minYVertex.getY();
+        float xDist = maxYVertex.getX() - minYVertex.getX();
 
         if(yDist <= 0)
         {
@@ -85,12 +89,13 @@ public class RenderContext extends Bitmap {
         }
 
         // For each y coordinate, defines how far to move on the x axis
-        float xStep = (float)xDist/(float)yDist;
-        float currX = (float)xStart;
+        float xStep = xDist/yDist;
+        float yStep = yStart - minYVertex.getY();
+        float currX = (float)xStart + yStep * xStep;
 
         for(int j = yStart; j < yEnd; j++)
         {
-            scanBuffer[j * 2 + side] = (int)currX;
+            scanBuffer[j * 2 + side] = (int)Math.ceil(currX);
             currX += xStep;
         }
     }
