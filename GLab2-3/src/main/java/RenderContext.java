@@ -1,33 +1,9 @@
 public class RenderContext extends Bitmap {
-    private final int[] scanBuffer;
 
     public RenderContext(int width, int height){
         super(width, height);
-        scanBuffer = new int[height * 2];   // 2 values foreach y coordinate
     }
-
-    public void drawScanBuffer(int yCoord, int xMin, int xMax)
-    {
-        scanBuffer[yCoord * 2] = xMin;
-        scanBuffer[yCoord * 2 + 1] = xMax;
-    }
-
-    // Fill the pixels using the frame buffer
-    public void fillShape(int yMin, int yMax)
-    {
-        for(int j = yMin; j < yMax; j++)
-        {
-            int xMin = scanBuffer[j * 2];
-            int xMax = scanBuffer[j * 2 + 1];
-
-            for(int i = xMin; i < xMax; i++)
-            {
-                byte colorByte =  (byte)(0xFF);
-                drawPixel(i, j, colorByte, colorByte, colorByte, colorByte);
-            }
-        }
-    }
-
+    
     public void fillTriangle(Vertex v1, Vertex v2, Vertex v3)
     {
         // Normalize the coordinates
@@ -55,48 +31,50 @@ public class RenderContext extends Bitmap {
             midYVert = temp;
         }
 
-        float area = minYVert.triangleArea(maxYVert, midYVert);
-        int orientation = area >= 0 ? 1 : 0;
-
-        scanConvertTriangle(minYVert, midYVert, maxYVert, orientation);
-        // Using top-left ceil-convention
-        fillShape((int)Math.ceil(minYVert.getY()), (int)Math.ceil(maxYVert.getY()));
+        scanTriangle(minYVert, midYVert, maxYVert, minYVert.triangleArea(maxYVert, midYVert) >= 0);
     }
 
-    public void scanConvertTriangle(Vertex minYVert, Vertex midYVert, Vertex maxYVert, int orientation)
+    public void scanTriangle(Vertex minYVert, Vertex midYVert, Vertex maxYVert, boolean orientation)
     {
-        scanConertLine(minYVert, maxYVert, 0 + orientation);
-        scanConertLine(minYVert, midYVert, 1 - orientation);
-        scanConertLine(midYVert, maxYVert, 1 - orientation);
+        Edge topToBot = new Edge(minYVert, maxYVert);
+        Edge topToMid = new Edge(minYVert, midYVert);
+        Edge midToBot = new Edge(midYVert, maxYVert);
 
+        // If orientation is false, then topToBot is the left edge, otherwise topToMid is the left edge
+        ScanEdges(topToBot, topToMid, orientation);
+        ScanEdges(topToBot, midToBot, orientation);
     }
 
-    // Assume the vertexes are sorted
-    private void scanConertLine(Vertex minYVertex, Vertex maxYVertex, int side)
+    private void ScanEdges(Edge a, Edge b, boolean handedness)
     {
-        // Using top-left ceil-convention
-        int yStart = (int)Math.ceil(minYVertex.getY());
-        int yEnd   = (int)Math.ceil(maxYVertex.getY());
-        int xStart = (int)Math.ceil(minYVertex.getX());
-        int xEnd   = (int)Math.ceil(maxYVertex.getX());
-
-        float yDist = maxYVertex.getY() - minYVertex.getY();
-        float xDist = maxYVertex.getX() - minYVertex.getX();
-
-        if(yDist <= 0)
+        Edge left = a;
+        Edge right = b;
+        if(handedness)
         {
-            return;
+            Edge temp = left;
+            left = right;
+            right = temp;
         }
 
-        // For each y coordinate, defines how far to move on the x axis
-        float xStep = xDist/yDist;
-        float yStep = yStart - minYVertex.getY();
-        float currX = (float)xStart + yStep * xStep;
-
+        int yStart = b.getYStart();
+        int yEnd   = b.getYEnd();
         for(int j = yStart; j < yEnd; j++)
         {
-            scanBuffer[j * 2 + side] = (int)Math.ceil(currX);
-            currX += xStep;
+            drawScanLine(left, right, j);
+            left.step();
+            right.step();
+        }
+    }
+
+    private void drawScanLine(Edge left, Edge right, int j)
+    {
+        int xMin = (int)Math.ceil(left.getX());
+        int xMax = (int)Math.ceil(right.getX());
+
+        for(int i = xMin; i < xMax; i++)
+        {
+            byte colorByte =  (byte)(0xFF);
+            drawPixel(i, j, colorByte, colorByte, colorByte, colorByte);
         }
     }
 }
