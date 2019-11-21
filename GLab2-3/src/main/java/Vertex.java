@@ -1,5 +1,6 @@
 public class Vertex {
     private Vector4f position;
+    private Vector4f color;
 
     public Vertex(float x, float y)
     {
@@ -11,15 +12,18 @@ public class Vertex {
         position = new Vector4f(x, y, z, 1);
     }
 
-    public Vertex(float x, float y, float z, float w)
+    public Vertex(Vector4f position, Vector4f color)
     {
-        position = new Vector4f(x, y, z, w);
+        this.position = position;
+        this.color = color;
     }
 
     public Vertex(Vector4f position)
     {
         this.position = position;
     }
+
+    public Vector4f getColor() { return color; }
 
     public float getX() {
         return position.getX();
@@ -39,17 +43,17 @@ public class Vertex {
 
     public Vertex transform(Matrix4f transform)
     {
-        return new Vertex(transform.transform(position));
+        return new Vertex(transform.transform(position), color);
     }
 
     public Vertex perspectiveDivide()
     {
         // Z - occlusion z-value
-        // W - perspective z-calue
-        return new Vertex(position.getX()/position.getW(),
+        // W - perspective z-value
+        return new Vertex(new Vector4f(position.getX()/position.getW(),
                 position.getY()/position.getW(),
                 position.getZ()/position.getW(),
-                   position.getW());
+                   position.getW()), color);
     }
 
     public float triangleArea(Vertex b, Vertex c)

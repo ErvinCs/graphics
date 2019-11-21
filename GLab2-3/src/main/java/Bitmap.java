@@ -42,21 +42,6 @@ public class Bitmap {
         }
     }
 
-//    // Java represents pixels in an integer array. Every integer represents a pixel.
-//    public void copyToIntArray(int[] dest)
-//    {
-//        for(int i = 0; i < width * height; i++)
-//        {
-//            // Place each ARGB component in different bytes
-//            int a = (int)components[i * 4] << 24;
-//            int r = (int)components[i * 4 + 1] << 16;
-//            int g = (int)components[i * 4 + 2] << 8;
-//            int b = (int)components[i * 4 + 3];
-//
-//            dest[i] = a | r | g | b;
-//        }
-//    }
-
     public int getHeight() {
         return height;
     }

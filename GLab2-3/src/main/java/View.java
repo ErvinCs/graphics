@@ -8,10 +8,10 @@ import javax.swing.JFrame;
 public class View extends Canvas{
     private final JFrame frame;
     private final RenderContext frameBuffer;
-    private final byte[] displayComponents; // The view components of the buffer image
+    private final byte[] displayComponents;         // The view components of the buffer image
     private final BufferedImage displayImage;
     private final BufferStrategy bufferStrategy;
-    private final Graphics graphics;    // Draws into the canvas
+    private final Graphics graphics;                // Draws into the canvas
 
     public View(int width, int height, String title)
     {

@@ -1,9 +1,11 @@
+import java.util.Vector;
+
 public class RenderContext extends Bitmap {
 
     public RenderContext(int width, int height){
         super(width, height);
     }
-    
+
     public void fillTriangle(Vertex v1, Vertex v2, Vertex v3)
     {
         // Normalize the coordinates
@@ -36,16 +38,17 @@ public class RenderContext extends Bitmap {
 
     public void scanTriangle(Vertex minYVert, Vertex midYVert, Vertex maxYVert, boolean orientation)
     {
-        Edge topToBot = new Edge(minYVert, maxYVert);
-        Edge topToMid = new Edge(minYVert, midYVert);
-        Edge midToBot = new Edge(midYVert, maxYVert);
+        Gradient gradient = new Gradient(minYVert, midYVert, maxYVert);
+        Edge topToBot = new Edge(minYVert, maxYVert, gradient, 0);
+        Edge topToMid = new Edge(minYVert, midYVert, gradient, 0);
+        Edge midToBot = new Edge(midYVert, maxYVert, gradient, 1);
 
         // If orientation is false, then topToBot is the left edge, otherwise topToMid is the left edge
-        ScanEdges(topToBot, topToMid, orientation);
-        ScanEdges(topToBot, midToBot, orientation);
+        ScanEdges(topToBot, topToMid, orientation, gradient);
+        ScanEdges(topToBot, midToBot, orientation, gradient);
     }
 
-    private void ScanEdges(Edge a, Edge b, boolean handedness)
+    private void ScanEdges(Edge a, Edge b, boolean handedness, Gradient gradient)
     {
         Edge left = a;
         Edge right = b;
@@ -60,21 +63,30 @@ public class RenderContext extends Bitmap {
         int yEnd   = b.getYEnd();
         for(int j = yStart; j < yEnd; j++)
         {
-            drawScanLine(left, right, j);
+            drawScanLine(left, right, j, gradient);
             left.step();
             right.step();
         }
     }
 
-    private void drawScanLine(Edge left, Edge right, int j)
+    private void drawScanLine(Edge left, Edge right, int j, Gradient gradient)
     {
         int xMin = (int)Math.ceil(left.getX());
         int xMax = (int)Math.ceil(right.getX());
+        float xPrestep = xMin - left.getX();
+
+        Vector4f color = left.getColor().add(gradient.getColorXStep().mul(xPrestep));
 
         for(int i = xMin; i < xMax; i++)
         {
-            byte colorByte =  (byte)(0xFF);
-            drawPixel(i, j, colorByte, colorByte, colorByte, colorByte);
+            // Add 0.5 to be rounded properly
+            byte a = (byte)0xFF;
+            byte r = (byte)(color.getX() * 255.0f + 0.5f);
+            byte g = (byte)(color.getY() * 255.0f + 0.5f);
+            byte b = (byte)(color.getZ() * 255.0f + 0.5f);
+
+            drawPixel(i, j, a, b, g, r);
+            color = color.add(gradient.getColorXStep());
         }
     }
 }
