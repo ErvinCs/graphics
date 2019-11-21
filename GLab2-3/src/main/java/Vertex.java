@@ -1,6 +1,6 @@
 public class Vertex {
     private Vector4f position;
-    private Vector4f color;
+    private Vector4f texCoords;
 
     public Vertex(float x, float y)
     {
@@ -12,10 +12,10 @@ public class Vertex {
         position = new Vector4f(x, y, z, 1);
     }
 
-    public Vertex(Vector4f position, Vector4f color)
+    public Vertex(Vector4f position, Vector4f texCoords)
     {
         this.position = position;
-        this.color = color;
+        this.texCoords = texCoords;
     }
 
     public Vertex(Vector4f position)
@@ -23,7 +23,7 @@ public class Vertex {
         this.position = position;
     }
 
-    public Vector4f getColor() { return color; }
+    public Vector4f getTexCoords() { return texCoords; }
 
     public float getX() {
         return position.getX();
@@ -43,7 +43,7 @@ public class Vertex {
 
     public Vertex transform(Matrix4f transform)
     {
-        return new Vertex(transform.transform(position), color);
+        return new Vertex(transform.transform(position), texCoords);
     }
 
     public Vertex perspectiveDivide()
@@ -53,7 +53,7 @@ public class Vertex {
         return new Vertex(new Vector4f(position.getX()/position.getW(),
                 position.getY()/position.getW(),
                 position.getZ()/position.getW(),
-                   position.getW()), color);
+                   position.getW()), texCoords);
     }
 
     public float triangleArea(Vertex b, Vertex c)

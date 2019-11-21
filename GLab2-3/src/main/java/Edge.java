@@ -4,9 +4,16 @@ public class Edge {
     private float xStep;
     private int yStart;
     private int yEnd;
-    // Color
-    private Vector4f color;
-    private Vector4f colorStep;
+    // Texture
+    private float texCoordX;
+    private float texCoordXStep;
+    private float texCoordY;
+    private float texCoordYStep;
+    private float oneOverZ;
+    private float oneOnZStep;
+    private float depth;
+    private float depthStep;
+
 
     public Edge(Vertex start, Vertex end, Gradient gradient, int minYVertGradientIndex)
     {
@@ -21,33 +28,48 @@ public class Edge {
         x = start.getX() + yPrestep * xStep;
         float xPrestep = x - start.getX();      // change on x-axis
 
-        // Adjust color to the x,y positions
-        color = gradient.getColor(minYVertGradientIndex)
-                .add(gradient.getColorYStep().mul(yPrestep))
-                .add(gradient.getColorXStep().mul(xPrestep));
-        colorStep = gradient.getColorYStep().add(gradient.getColorXStep().mul(xStep));
+        texCoordX = gradient.getTexCoordX(minYVertGradientIndex) +
+                gradient.getTexCoordXXStep() * xPrestep +
+                gradient.getTexCoordXYStep() * yPrestep;
+        texCoordXStep = gradient.getTexCoordXYStep() + gradient.getTexCoordXXStep() * xStep;
+
+        texCoordY = gradient.getTexCoordY(minYVertGradientIndex) +
+                gradient.getTexCoordYXStep() * xPrestep +
+                gradient.getTexCoordYYStep() * yPrestep;
+        texCoordYStep = gradient.getTexCoordYYStep() + gradient.getTexCoordYXStep() * xStep;
+
+        oneOverZ = gradient.getOneOverZ(minYVertGradientIndex) +
+                gradient.getOneOverZXStep() * xPrestep +
+                gradient.getOneOverZYStep() * yPrestep;
+        oneOnZStep = gradient.getOneOverZYStep() + gradient.getOneOverZXStep() * xStep;
+
+        depth = gradient.getDepth(minYVertGradientIndex) +
+                gradient.getDepthXStep() * xPrestep +
+                gradient.getDepthYStep() * yPrestep;
+        depthStep = gradient.getDepthYStep() + gradient.getDepthXStep() * xStep;
     }
 
     public void step()
     {
-        // Move to the new X on a scan line
+        // Move to the new vars on a scan line
         x += xStep;
-        color = color.add(colorStep);
+        texCoordX += texCoordXStep;
+        texCoordY += texCoordYStep;
+        oneOverZ += oneOnZStep;
+        depth += depthStep;
     }
 
     public float getX() {
         return x;
     }
-
     public int getYStart() {
         return yStart;
     }
-
     public int getYEnd() {
         return yEnd;
     }
-
-    public Vector4f getColor() {
-        return color;
-    }
+    public float getTexCoordX() { return texCoordX; }
+    public float getTexCoordY() { return texCoordY; }
+    public float getOneOnZ() { return oneOverZ; }
+    public float getDepth() { return depth; }
 }

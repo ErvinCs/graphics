@@ -6,11 +6,11 @@ import javax.swing.JFrame;
 
 // View Window
 public class View extends Canvas{
-    private final JFrame frame;
-    private final RenderContext frameBuffer;
-    private final byte[] displayComponents;         // The view components of the buffer image
-    private final BufferedImage displayImage;
-    private final BufferStrategy bufferStrategy;
+    private final JFrame frame;                     // Window
+    private final RenderContext frameBuffer;        // Holds the bitmap to be displayed
+    private final byte[] displayComponents;         // The view components of the buffered image
+    private final BufferedImage displayImage;       // Used to display the bitmap of frameBuffer:RenderContext in the window
+    private final BufferStrategy bufferStrategy;    // Defines how memory is organized on the Window
     private final Graphics graphics;                // Draws into the canvas
 
     public View(int width, int height, String title)
@@ -21,13 +21,14 @@ public class View extends Canvas{
         setMinimumSize(size);
         setMaximumSize(size);
 
+        // Create the image
         frameBuffer = new RenderContext(width, height);
         displayImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         displayComponents = ((DataBufferByte)(displayImage.getRaster().getDataBuffer())).getData();
 
         frameBuffer.clear((byte)0x00);
 
-        // Configure display JFrame
+        // Configure the display JFrame
         frame = new JFrame();
         // Add this Canvas to the frame
         frame.add(this);
@@ -40,15 +41,17 @@ public class View extends Canvas{
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Create buffers to draw in
+        // Create 1 buffer to draw in
         createBufferStrategy(1);
+        // Used to access the buffer
         bufferStrategy = getBufferStrategy();
+        // The graphics object to be drawn into
         graphics = bufferStrategy.getDrawGraphics();
     }
 
     public void swapBuffers()
     {
-        // Copy the bitmap into the byte array of the display image
+        // Copy the bitmap framebuffer into the byte array of the display image
         frameBuffer.copyToByteArray(displayComponents);
         graphics.drawImage(displayImage, 0, 0, frameBuffer.getWidth(), frameBuffer.getHeight(), null);
         bufferStrategy.show();
