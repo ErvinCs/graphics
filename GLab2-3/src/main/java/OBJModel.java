@@ -32,20 +32,20 @@ public class OBJModel
 					&& m_normalIndex == index.m_normalIndex;
 		}
 
-		@Override
-		public int hashCode()
-		{
-			final int BASE = 17;
-			final int MULTIPLIER = 31;
-
-			int result = BASE;
-
-			result = MULTIPLIER * result + m_vertexIndex;
-			result = MULTIPLIER * result + m_texCoordIndex;
-			result = MULTIPLIER * result + m_normalIndex;
-
-			return result;
-		}
+//		@Override
+//		public int hashCode()
+//		{
+//			final int BASE = 17;
+//			final int MULTIPLIER = 31;
+//
+//			int result = BASE;
+//
+//			result = MULTIPLIER * result + m_vertexIndex;
+//			result = MULTIPLIER * result + m_texCoordIndex;
+//			result = MULTIPLIER * result + m_normalIndex;
+//
+//			return result;
+//		}
 	}
 
 	private List<Vector4f> m_positions;
@@ -69,6 +69,15 @@ public class OBJModel
 		return res;
 	}
 
+	/**
+	 * An OBJ model read from a file. The model is represented using: vertex buffer, index buffer,
+	 * 	v - The vertex command specifies a vertex by its three coordinates.
+	 * 	vt - The vertex texture command specifies the UV (and optionally W) mapping; they must be grouped with a vertex in a 'f' face command.
+	 * 	vn - The vertex normal command specifies a normal vector; they must be grouped with a vertex in a 'f' face command.
+	 * 	f - The face command specifies a polygon made from the vertices listed. To reference a vertex you just give its index in the file.
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public OBJModel(String fileName) throws IOException
 	{
 		m_positions = new ArrayList<Vector4f>();

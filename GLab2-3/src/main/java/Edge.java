@@ -23,11 +23,12 @@ public class Edge {
         float yDist = end.getY() - start.getY();
         float xDist = end.getX() - start.getX();
 
-        float yPrestep = yStart - start.getY(); // change on y-axis
+        float yPrestep = yStart - start.getY(); // change on y-axis after truncating the pixel position
         xStep = xDist/yDist;
         x = start.getX() + yPrestep * xStep;
-        float xPrestep = x - start.getX();      // change on x-axis
+        float xPrestep = x - start.getX();      // change on x-axis after truncating the pixel position
 
+        // Adjust the texture coordinates to the truncating calculations according to Prestep variables
         texCoordX = gradient.getTexCoordX(minYVertGradientIndex) +
                 gradient.getTexCoordXXStep() * xPrestep +
                 gradient.getTexCoordXYStep() * yPrestep;

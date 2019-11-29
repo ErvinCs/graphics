@@ -5,8 +5,8 @@ public class EntryPoint {
         View view = new View(800, 600, "Graphics");
         RenderContext target = view.getFrameBuffer();
 
-        Bitmap texture = new Bitmap("./res/cat_tex.jpg");
-        Mesh mesh = new Mesh("./res/cat_obj.obj");
+        Bitmap texture = new Bitmap("./res/carpet_tex.jpg");
+        Mesh mesh = new Mesh("./res/monkey_obj.obj");
 
         Matrix4f projection = new Matrix4f().initPerspective((float)Math.toRadians(70.0f),
                 (float)target.getWidth()/(float)target.getHeight(), 0.1f, 1000.0f);
@@ -20,7 +20,7 @@ public class EntryPoint {
             prevTime = currTime;
 
             rotationCounter += delta;
-            // MVP - matrix
+            // (S)QT Transformations
             Matrix4f translation = new Matrix4f().initTranslation(0.0f, 0.0f, 3.0f);
             Matrix4f rotation = new Matrix4f().initRotation(rotationCounter, 0.0f, rotationCounter);
             Matrix4f transform = projection.mul(translation.mul(rotation));

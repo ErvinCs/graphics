@@ -3,7 +3,9 @@ import java.util.ArrayList;
 import java.io.IOException;
 
 public class Mesh {
+    // Store vertices
     private List<Vertex> vertexArray;
+    // Reuse the vertices by referring to them by index
     private List<Integer> indexArray;
 
     public Vertex getVertex(int i) { return vertexArray.get(i); }

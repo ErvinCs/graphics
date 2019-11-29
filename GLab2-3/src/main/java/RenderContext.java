@@ -20,6 +20,10 @@ public class RenderContext extends Bitmap {
     {
         for(int i = 0; i < mesh.getNumIndices(); i += 3)
         {
+            // Get the Vertices from the vertex buffer according to the index buffer
+            // Apply perspective divide
+            // Apply Z-buffering
+            // Map the texture
             fillTriangle(mesh.getVertex(mesh.getIndex(i)).transform(transform),
                         mesh.getVertex(mesh.getIndex(i + 1)).transform(transform),
                         mesh.getVertex(mesh.getIndex(i + 2)).transform(transform),
@@ -31,11 +35,12 @@ public class RenderContext extends Bitmap {
     {
         // Normalize the coordinates
         Matrix4f screenSpaceTransform = new Matrix4f().initScreenSpaceTransform(getWidth()/2, getHeight()/2);
+        // After multiplying with the projection matrix, each coordinate’s W will increase the further away the object is.
+        // Divide X, Y, Z will be divided by W => The further away something is, the more it will be pulled towards the center of the screen.
         Vertex minYVert = v1.transform(screenSpaceTransform).perspectiveDivide();
         Vertex midYVert = v2.transform(screenSpaceTransform).perspectiveDivide();
         Vertex maxYVert = v3.transform(screenSpaceTransform).perspectiveDivide();
 
-        // ??
         if(minYVert.triangleArea(maxYVert, midYVert) >= 0)
         {
             return;
@@ -96,12 +101,14 @@ public class RenderContext extends Bitmap {
         }
     }
 
+    // Moves through the texture line by line
     private void drawScanLine(Edge left, Edge right, int j, Bitmap texture)
     {
         int xMin = (int)Math.ceil(left.getX());
         int xMax = (int)Math.ceil(right.getX());
         float xPrestep = xMin - left.getX();
 
+        // Move on the texture by texCoordSteps
         float xDist = right.getX() - left.getX();
         float texCoordXXStep = (right.getTexCoordX() - left.getTexCoordX())/xDist;
         float texCoordYXStep = (right.getTexCoordY() - left.getTexCoordY())/xDist;
@@ -115,6 +122,7 @@ public class RenderContext extends Bitmap {
 
         for(int i = xMin; i < xMax; i++)
         {
+            // Apply zBuffering
             int index = i + j * getWidth();
             if(depth < zBuffer[index])
             {

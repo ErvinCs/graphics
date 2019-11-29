@@ -4,6 +4,7 @@ public class Gradient {
     private float[] oneOverZ;
     private float[] depth;
 
+    // At each step move along X,Y axes
     private float texCoordXXStep;
     private float texCoordXYStep;
     private float texCoordYXStep;
@@ -51,12 +52,12 @@ public class Gradient {
         texCoordY = new float[3];
         depth = new float[3];
 
+        // Occlusion Z value
         depth[0] = minYVert.getPosition().getZ();
         depth[1] = midYVert.getPosition().getZ();
         depth[2] = maxYVert.getPosition().getZ();
 
-        // Note that the W component is the perspective Z value;
-        // The Z component is the occlusion Z value
+        // Perspective Z value
         oneOverZ[0] = 1.0f/minYVert.getPosition().getW();
         oneOverZ[1] = 1.0f/midYVert.getPosition().getW();
         oneOverZ[2] = 1.0f/maxYVert.getPosition().getW();
@@ -69,6 +70,9 @@ public class Gradient {
         texCoordY[1] = midYVert.getTexCoords().getY() * oneOverZ[1];
         texCoordY[2] = maxYVert.getTexCoords().getY() * oneOverZ[2];
 
+        // For an interpolant C, solve:
+	    // dC/dx = ((C1-C2) * (y0-y2) - (C0-C2) * (y1-y2)) /  ((x1-x2) * (y0-y2) - (x0 - x2) * (y1-y2))
+        // dC/dy = ((C1-C2) * (x0-x2) - (C0-C2) * (x1-x2)) /  ((x0-x2) * (y1-y2) - (x1 - x2) * (y0-y2))
         texCoordXXStep = calcXStep(texCoordX, minYVert, midYVert, maxYVert, oneOverdX);
         texCoordXYStep = calcYStep(texCoordX, minYVert, midYVert, maxYVert, oneOverdY);
         texCoordYXStep = calcXStep(texCoordY, minYVert, midYVert, maxYVert, oneOverdX);
