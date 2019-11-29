@@ -1,9 +1,9 @@
 # graphics
 Computer Graphics Sem5
 
-### Final project
+### Lab1 - 2D Graph
+### Lab2 - Z-Buffering
+### Lab3 - Texture Mapping
+### Final project (TODO)
 * Problem statement
 * Solving method
-
-### Lab1 - 2D Graph
-
