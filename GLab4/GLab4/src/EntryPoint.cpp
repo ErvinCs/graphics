@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-float xPos = -10;
+float xPos = -9;
 bool xDirRight = true;
 const float xStep = 0.2;
 
@@ -11,18 +11,23 @@ void displayCallback()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();	// Reset the parameters of the model-view matrix 
 
-	glShadeModel(GL_SMOOTH);	// GL_FLAT specifies that blending will not occur
+	// Translation - cannot be called in glBegin-glEnd
+	glTranslatef(xPos, xPos, 0.0f);
+
+	// GL_FLAT specifies that blending will not occur
+	// GL_SMOOTH is the default
+	glShadeModel(GL_SMOOTH);	
 
 	// Draw calls
 	glBegin(GL_POLYGON);
 	
 	// Specify Vertices - anti-clockwise fashion
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex2f(xPos,	   1.0f);
-	glVertex2f(xPos,	  -1.0f);
+	glVertex2f(-1.0f,	   1.0f);
+	glVertex2f(-1.0f,	  -1.0f);
 	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex2f(xPos+2.0f, -1.0f);
-	glVertex2f(xPos+2.0f,  1.0f);
+	glVertex2f(1.0f, -1.0f);
+	glVertex2f(1.0f,  1.0f);
 
 	glEnd();
 
@@ -54,13 +59,13 @@ void timer(int)
 	switch (xDirRight)
 	{
 	case true:
-		if (xPos < 8)
+		if (xPos < 9)
 			xPos += xStep;
 		else
 			xDirRight = false;
 		break;
 	case false:
-		if (xPos > -10)
+		if (xPos > -9)
 			xPos -= xStep;
 		else
 			xDirRight = true;
