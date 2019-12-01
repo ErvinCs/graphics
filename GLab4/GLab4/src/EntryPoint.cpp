@@ -11,12 +11,16 @@ void displayCallback()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();	// Reset the parameters of the model-view matrix 
 
+	glShadeModel(GL_SMOOTH);	// GL_FLAT specifies that blending will not occur
+
 	// Draw calls
 	glBegin(GL_POLYGON);
 	
 	// Specify Vertices - anti-clockwise fashion
+	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex2f(xPos,	   1.0f);
 	glVertex2f(xPos,	  -1.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex2f(xPos+2.0f, -1.0f);
 	glVertex2f(xPos+2.0f,  1.0f);
 
@@ -46,7 +50,6 @@ void timer(int)
 	// Timer calls itself periodically - 60fps
 	glutTimerFunc(1000 / 60, timer, 0);
 
-	// BUGGED HERE
 	// Update X
 	switch (xDirRight)
 	{
@@ -66,6 +69,15 @@ void timer(int)
 	std::cout << "Timer-Step: xPos=" << xPos << std::endl;
 }
 
+void initColor()
+{
+	// Color is a state variable in OpenGL
+	// If Color = Value, then everything drawn will be drawn in Color (which is Value at the given point in time)
+	// Colors are assigned per vertex
+	// Example: To draw a cube with different colors for faces, the color must be set before drawing each face
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
@@ -79,10 +91,11 @@ int main(int argc, char** argv)
 
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(reshapeCallback);
+	
 	// Call a function after a specified ammount of time
 	glutTimerFunc(1000, timer, 0);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	initColor();
 
 	glutMainLoop();
 }
