@@ -2,9 +2,12 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-float xPos = -9;
-bool xDirRight = true;
-const float xStep = 0.2;
+float zPos = 0.0f;
+bool zDir = true;
+const float zStep = 0.2f;
+
+// Positive Z-axis is going towards the screen
+// The camera is at the origin and is looking towards the negative z-axis
 
 void displayCallback()
 {
@@ -12,7 +15,7 @@ void displayCallback()
 	glLoadIdentity();	// Reset the parameters of the model-view matrix 
 
 	// Translation - cannot be called in glBegin-glEnd
-	glTranslatef(xPos, xPos, 0.0f);
+	glTranslatef(0.0f, 0.0f, zPos);
 
 	// GL_FLAT specifies that blending will not occur
 	// GL_SMOOTH is the default
@@ -23,11 +26,10 @@ void displayCallback()
 	
 	// Specify Vertices - anti-clockwise fashion
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex2f(-1.0f,	   1.0f);
-	glVertex2f(-1.0f,	  -1.0f);
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex2f(1.0f, -1.0f);
-	glVertex2f(1.0f,  1.0f);
+	glVertex3f(-1.0f,  1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 0.0f);
+	glVertex3f( 1.0f, -1.0f, 0.0f);
+	glVertex3f( 1.0f,  1.0f, 0.0f);
 
 	glEnd();
 
@@ -44,7 +46,10 @@ void reshapeCallback(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();	// Reset the parameters of the projection matrix 
 
-	gluOrtho2D(-10, 10, -10, 10);
+	// FOV is usually 45 or 60 - the angle between the top-left & bottom-left corners of the projection (== top-right and bottom-right)
+	// Aspect ratio
+	// Z-near & Z-far - distance between the near clip-pane to the camera & the far clip-pane to the camera
+	gluPerspective(60, 1, 2.0f, 50.0f);
 	glMatrixMode(GL_MODELVIEW); 
 }
 
@@ -56,22 +61,22 @@ void timer(int)
 	glutTimerFunc(1000 / 60, timer, 0);
 
 	// Update X
-	switch (xDirRight)
+	switch (zDir)
 	{
 	case true:
-		if (xPos < 9)
-			xPos += xStep;
+		if (zPos < -5)
+			zPos += zStep;
 		else
-			xDirRight = false;
+			zDir = false;
 		break;
 	case false:
-		if (xPos > -9)
-			xPos -= xStep;
+		if (zPos > -15)
+			zPos -= zStep;
 		else
-			xDirRight = true;
+			zDir = true;
 		break;
 	}
-	std::cout << "Timer-Step: xPos=" << xPos << std::endl;
+	std::cout << "Timer-Step: zPos=" << zPos << std::endl;
 }
 
 void initColor()
