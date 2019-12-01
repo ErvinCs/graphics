@@ -2,34 +2,76 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-float zPos = 0.0f;
-bool zDir = true;
-const float zStep = 0.2f;
+// Rotation - right-hand-rule (rotation from right-to-left)
+// The objects are dranw and their coordinate system is rotated
+float angle = 0.0f;
+const float angleStep = 2.0f;
 
 // Positive Z-axis is going towards the screen
 // The camera is at the origin and is looking towards the negative z-axis
+float xPos = -9.0f;
+bool xDirRight = true;
+const float xStep = 0.2f;
+const float xBound = 5.0f;
 
 void displayCallback()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();	// Reset the parameters of the model-view matrix 
+	// Clear the collor buffer & the depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Reset the parameters of the model-view matrix 
+	glLoadIdentity();	
 
-	// Translation - cannot be called in glBegin-glEnd
-	glTranslatef(0.0f, 0.0f, zPos);
+	// Translation
+	glTranslatef(xPos, 0.0f, -10.0f);
+	// Rotation
+	glRotatef(angle, 1.0f, 1.0f, 1.0f);
 
 	// GL_FLAT specifies that blending will not occur
 	// GL_SMOOTH is the default
 	glShadeModel(GL_SMOOTH);	
 
 	// Draw calls
-	glBegin(GL_POLYGON);
+	// GL_QUADS - each 4 vertices form a quad
+	glBegin(GL_QUADS);
 	
-	// Specify Vertices - anti-clockwise fashion
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-1.0f,  1.0f, 0.0f);
-	glVertex3f(-1.0f, -1.0f, 0.0f);
-	glVertex3f( 1.0f, -1.0f, 0.0f);
-	glVertex3f( 1.0f,  1.0f, 0.0f);
+	// Specify Vertices - anti-clockwise fashion for the front & clockwise fashion for the back 
+	// Hard-coded cube vertex data
+	//Front
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(-1.0,  1.0, 1.0);
+	glVertex3f(-1.0, -1.0, 1.0);
+	glVertex3f( 1.0, -1.0, 1.0);
+	glVertex3f( 1.0,  1.0, 1.0);
+	//Back
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f( 1.0,  1.0, -1.0);
+	glVertex3f( 1.0, -1.0, -1.0);
+	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-1.0,  1.0, -1.0);
+	//Right
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(1.0,  1.0,  1.0);
+	glVertex3f(1.0, -1.0,  1.0);
+	glVertex3f(1.0, -1.0, -1.0);
+	glVertex3f(1.0,  1.0, -1.0);
+	//Left
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex3f(-1.0,  1.0, -1.0);
+	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-1.0, -1.0,  1.0);
+	glVertex3f(-1.0,  1.0,  1.0);
+	//Top
+	glColor3f(0.0, 1.0, 1.0);
+	glVertex3f(-1.0, 1.0, -1.0);
+	glVertex3f(-1.0, 1.0,  1.0);
+	glVertex3f( 1.0, 1.0,  1.0);
+	glVertex3f( 1.0, 1.0, -1.0);
+	//Bottom
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-1.0, -1.0,  1.0);
+	glVertex3f( 1.0, -1.0,  1.0);
+	glVertex3f( 1.0, -1.0, -1.0);
 
 	glEnd();
 
@@ -44,7 +86,8 @@ void reshapeCallback(int width, int height)
 
 	// Set Projection
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();	// Reset the parameters of the projection matrix 
+	// Reset the parameters of the projection matrix
+	glLoadIdentity();	 
 
 	// FOV is usually 45 or 60 - the angle between the top-left & bottom-left corners of the projection (== top-right and bottom-right)
 	// Aspect ratio
@@ -55,28 +98,32 @@ void reshapeCallback(int width, int height)
 
 void timer(int)
 {
-	// Also call Display 60 times in 1 second - OpenGL does it by itself
+	// Call Display 60 times per second (OpenGL does it by itself)
 	glutPostRedisplay();
 	// Timer calls itself periodically - 60fps
 	glutTimerFunc(1000 / 60, timer, 0);
 
 	// Update X
-	switch (zDir)
+	switch (xDirRight)
 	{
 	case true:
-		if (zPos < -5)
-			zPos += zStep;
+		if (xPos < xBound)
+			xPos += xStep;
 		else
-			zDir = false;
+			xDirRight = false;
 		break;
 	case false:
-		if (zPos > -15)
-			zPos -= zStep;
+		if (xPos > -xBound)
+			xPos -= xStep;
 		else
-			zDir = true;
+			xDirRight = true;
 		break;
 	}
-	std::cout << "Timer-Step: zPos=" << zPos << std::endl;
+	// Update Angle (degrees)
+	angle += angleStep;
+	if (angle > 360.0f)
+		angle -= 360.0f;
+	std::cout << "Timer-Step: xPos=" << xPos << ", angle=" << angle << std::endl;
 }
 
 void initColor()
@@ -86,13 +133,15 @@ void initColor()
 	// Colors are assigned per vertex
 	// Example: To draw a cube with different colors for faces, the color must be set before drawing each face
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	// Enablde depth-testing using z-buffering
+	glEnable(GL_DEPTH_TEST);
 }
 
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	// RGB & Double-Buffer display mode
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
 	glutInitWindowPosition(200, 100);
 	glutInitWindowSize(500, 500);
@@ -103,7 +152,7 @@ int main(int argc, char** argv)
 	glutReshapeFunc(reshapeCallback);
 	
 	// Call a function after a specified ammount of time
-	glutTimerFunc(1000, timer, 0);
+	glutTimerFunc(10, timer, 0);
 
 	initColor();
 
