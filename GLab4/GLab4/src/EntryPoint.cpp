@@ -2,13 +2,14 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+// Positive Z-axis is going towards the screen
+// The camera is at the origin and is looking towards the negative z-axis
+
 // Rotation - right-hand-rule (rotation from right-to-left)
 // The objects are dranw and their coordinate system is rotated
 float angle = 0.0f;
 const float angleStep = 2.0f;
 
-// Positive Z-axis is going towards the screen
-// The camera is at the origin and is looking towards the negative z-axis
 float xPos = -9.0f;
 bool xDirRight = true;
 const float xStep = 0.2f;
