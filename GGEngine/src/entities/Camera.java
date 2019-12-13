@@ -8,22 +8,22 @@ public class Camera {
     private float pitch;    // Rise/Fall
     private float yaw;      // Left/Right aiming
     private float roll;     // Self-explanatory
-    private final float moveSpeed = 0.02f;
+    private final float moveSpeed = 0.1f;
 
     public Camera() {}
 
     public void move() {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            position.z += moveSpeed;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             position.z -= moveSpeed;
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            position.z += moveSpeed;
+        }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            position.x += moveSpeed;
+            position.x -= moveSpeed;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            position.x -= moveSpeed;
+            position.x += moveSpeed;
         }
     }
 

@@ -27,14 +27,19 @@ public class ModelLoader {
     private List<Integer> texList = new ArrayList<>();
 
     /**
+     *
      * @param positions - positions of the model vertices
+     * @param texCoords
+     * @param normals
+     * @param indices
      * @return Model3D
      */
-    public Model3D loadToVAO(float[] positions, float[] texCoords, int[] indices) {
+    public Model3D loadToVAO(float[] positions, float[] texCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
         bindIndexBuffer(indices);
         createVBO(0, 3, positions);
         createVBO(1, 2, texCoords);
+        createVBO(2, 3, normals);
         unbindVAO();
         return new Model3D(vaoID, indices.length);    // Each vertex has 3 floats
     }
