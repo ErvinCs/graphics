@@ -1,16 +1,19 @@
 package entities;
 
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
-    private Vector3f position = new Vector3f(0,0,0);
+    private Vector3f position = new Vector3f(-180,80,0);
     private float pitch;    // Rise/Fall
-    private float yaw;      // Left/Right aiming
+    private float yaw = 160;      // Left/Right aiming
     private float roll;     // Self-explanatory
-    private final float moveSpeed = 0.1f;
+    private final float moveSpeed = 1f;
 
     public Camera() {}
+
+
 
     public void move() {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
@@ -19,12 +22,28 @@ public class Camera {
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             position.z += moveSpeed;
         }
+
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            position.x -= moveSpeed;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             position.x += moveSpeed;
         }
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            position.x -= moveSpeed;
+        }
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+            position.y += moveSpeed;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
+            position.y -= moveSpeed;
+        }
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            yaw += moveSpeed;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            yaw -= moveSpeed;
+        }
+        System.out.println("Position: " + position.toString());
     }
 
     public Vector3f getPosition() {

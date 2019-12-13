@@ -5,9 +5,9 @@ import entities.Light;
 import org.lwjgl.util.vector.Matrix4f;
 import util.MathUtil;
 
-public class StaticShader extends Shader {
-    private static final String VERTEX_FILE = "src/shaders/res/vertexShader.shader";
-    private static final String FRAGMENT_FILE = "src/shaders/res/fragmentShader.shader";
+public class TerrainShader extends Shader {
+    private static final String VERTEX_FILE = "src/shaders/res/terrainVertexShader.shader";
+    private static final String FRAGMENT_FILE = "src/shaders/res/terrainFragmentShader.shader";
 
     private int transformMatrixLocation;
     private int projectionMatrixLocation;
@@ -17,7 +17,7 @@ public class StaticShader extends Shader {
     private int shineDampLocation;
     private int reflectivityLocation;
 
-    public StaticShader() {
+    public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
 
@@ -61,4 +61,5 @@ public class StaticShader extends Shader {
         super.loadFloat(shineDampLocation, shineDamp);
         super.loadFloat(reflectivityLocation, reflectivity);
     }
+
 }

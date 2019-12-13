@@ -10,6 +10,7 @@ import renderer.*;
 import models.Model3D;
 import shaders.Shader;
 import shaders.StaticShader;
+import terrain.Terrain;
 import textures.Texture;
 
 import java.util.ArrayList;
@@ -33,16 +34,26 @@ public class Game {
         entities.add(entity1);
         entities.add(entity2);
 
-        Light light = new Light(new Vector3f(0, 0, -5), new Vector3f(1, 1, 1));
+        Light light = new Light(new Vector3f(900, 800, 300), new Vector3f(1, 1, 1));
+        Light redLight = new Light(new Vector3f(0, 0, -5), new Vector3f(1, 0, 0));
+        Texture terrainTex = new Texture(loader.loadTexture("circuits.png"));
+        Terrain terrain1 = new Terrain(0, 0, loader, terrainTex);
+        Terrain terrain2 = new Terrain(1, 0, loader, terrainTex);
+
+
         Camera camera = new Camera();
         RenderManager renderManager = new RenderManager();
 
         while(!Display.isCloseRequested()) {
-           camera.move();
+            camera.move();
 
-           for(Entity e : entities) {
+            for(Entity e : entities) {
                 renderManager.addEntity(e);
-           }
+            }
+
+            renderManager.addTerrain(terrain1);
+            renderManager.addTerrain(terrain2);
+
             renderManager.draw(light, camera);
             DisplayManager.updateDisplay();
         }
