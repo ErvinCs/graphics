@@ -15,30 +15,49 @@ import textures.Texture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
     public static void main(String[] args) {
         DisplayManager.createDisplay();
-
         ModelLoader loader = new ModelLoader();
 
-        Model3D model3D = OBJLoader.loadObjModel("sphere_obj.obj", loader);
-        Texture texture = new Texture(loader.loadTexture("flag.png"));
-        TexturedModel modelTex = new TexturedModel(model3D, texture);
-        texture.setShineDamp(10.0f);
-        texture.setReflectivity(1f);
+        Model3D treeModel3D   = OBJLoader.loadObjModel("tree.obj", loader);
+        Model3D grassModel3D  = OBJLoader.loadObjModel("grassModel.obj", loader);
+        Model3D fernModel3D   = OBJLoader.loadObjModel("fern.obj", loader);
+        Model3D dragonModel3D = OBJLoader.loadObjModel("dragon.obj", loader);
 
-        Entity entity1 = new Entity(modelTex, new Vector3f(0, 0, -10), new Vector3f(0,0,0),1);
-        Entity entity2 = new Entity(modelTex, new Vector3f(10, 10, -30), new Vector3f(0.5f,0.5f,0.5f),1);
-        List<Entity> entities = new ArrayList<>();
-        entities.add(entity1);
-        entities.add(entity2);
+        TexturedModel treeModel   = new TexturedModel(treeModel3D, new Texture(loader.loadTexture("tree.png")));
+        TexturedModel grassModel  = new TexturedModel(grassModel3D, new Texture(loader.loadTexture("grassTexture.png")));
+        grassModel.getTexture().setTransparent(true);
+        grassModel.getTexture().setUseSimulatedLight(true);
+        TexturedModel fernModel   = new TexturedModel(fernModel3D, new Texture(loader.loadTexture("fern.png")));
+        fernModel.getTexture().setTransparent(true);
+        grassModel.getTexture().setUseSimulatedLight(true);
+        TexturedModel dragonModel = new TexturedModel(dragonModel3D, new Texture(loader.loadTexture("circuits.png")));
 
-        Light light = new Light(new Vector3f(900, 800, 300), new Vector3f(1, 1, 1));
-        Light redLight = new Light(new Vector3f(0, 0, -5), new Vector3f(1, 0, 0));
-        Texture terrainTex = new Texture(loader.loadTexture("circuits.png"));
-        Terrain terrain1 = new Terrain(0, 0, loader, terrainTex);
-        Terrain terrain2 = new Terrain(1, 0, loader, terrainTex);
+        List<Entity> entityList = new ArrayList<>();
+        Random rand = new Random();
+        for(int i = 0; i < 200; i++) {
+            entityList.add(new Entity(treeModel, new Vector3f(rand.nextFloat() * 1024, 0, rand.nextFloat() * 800),
+                    new Vector3f(0, 0, 0), 3));
+            entityList.add(new Entity(grassModel, new Vector3f(rand.nextFloat() * 1024, 0, rand.nextFloat() * 800),
+                    new Vector3f(0, 0, 0), 1));
+            entityList.add(new Entity(fernModel, new Vector3f(rand.nextFloat() * 1024, 0, rand.nextFloat() * 800),
+                    new Vector3f(0, 0, 0), 0.5f));
+        }
+        entityList.add(new Entity(dragonModel, new Vector3f(400, 200, 400), new Vector3f(0, 0, 0), 10));
+
+        Light light = new Light(new Vector3f(3000, 2000, 1000), new Vector3f(0.9f, 0.9f, 0.9f));
+        Texture terrainTex = new Texture(loader.loadTexture("grass.png"));
+        List<Terrain> terrainList = new ArrayList<>();
+        int maxMapSize = 8;
+        terrainList.add(new Terrain(0, 0, loader, terrainTex));
+        for(int i = 1; i < maxMapSize; i++) {
+            terrainList.add(new Terrain(0, i, loader, terrainTex));
+            terrainList.add(new Terrain(i, 0, loader, terrainTex));
+            terrainList.add(new Terrain(i, i, loader, terrainTex));
+        }
 
 
         Camera camera = new Camera();
@@ -47,12 +66,13 @@ public class Game {
         while(!Display.isCloseRequested()) {
             camera.move();
 
-            for(Entity e : entities) {
+            for(Entity e : entityList) {
                 renderManager.addEntity(e);
             }
 
-            renderManager.addTerrain(terrain1);
-            renderManager.addTerrain(terrain2);
+            for(Terrain t : terrainList) {
+                renderManager.addTerrain(t);
+            }
 
             renderManager.draw(light, camera);
             DisplayManager.updateDisplay();

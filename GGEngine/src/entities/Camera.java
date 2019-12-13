@@ -16,34 +16,44 @@ public class Camera {
 
 
     public void move() {
+        // Z
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             position.z -= moveSpeed;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             position.z += moveSpeed;
         }
-
+        // X
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             position.x += moveSpeed;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             position.x -= moveSpeed;
         }
-
+        // Y
         if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
             position.y += moveSpeed;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
             position.y -= moveSpeed;
         }
-
+        // YAW
         if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
             yaw += moveSpeed;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             yaw -= moveSpeed;
         }
-        System.out.println("Position: " + position.toString());
+        // PITCH
+        if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+            pitch += moveSpeed;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
+            pitch -= moveSpeed;
+        }
+        //System.out.println("Position: " + position.toString());
+        //System.out.println("Yaw: " + yaw.toString());
+        //System.out.println("Pitch: " + pitch.toString());
     }
 
     public Vector3f getPosition() {

@@ -27,8 +27,12 @@ void main(void) {
     float specularFactor = dot(reflectedLightDirection, unitTowardsCamera);
     specularFactor = max(specularFactor, 0.0);
     float dampFactor = pow(specularFactor, shineDamp);
-
     vec3 finalSpecular = dampFactor * reflectivity * lightColor;
 
-    o_color = vec4(diffuse, 1.0) * texture(texSampler, o_texCoords) + vec4(finalSpecular, 1.0);
+    vec4 textureColor = texture(texSampler, o_texCoords);
+    if (textureColor.a < 0.5) {
+        discard;
+    }
+
+    o_color = vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0);
 }

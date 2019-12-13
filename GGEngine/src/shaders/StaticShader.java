@@ -16,6 +16,7 @@ public class StaticShader extends Shader {
     private int lightColorLocation;
     private int shineDampLocation;
     private int reflectivityLocation;
+    private int useSimulatedLightingLocation;
 
     public StaticShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -37,6 +38,7 @@ public class StaticShader extends Shader {
         this.lightColorLocation = super.getUniformLocation("lightColor");
         this.shineDampLocation = super.getUniformLocation("shineDamp");
         this.reflectivityLocation = super.getUniformLocation("reflectivity");
+        this.useSimulatedLightingLocation = super.getUniformLocation("useSimulatedLighting");
     }
 
     public void loadTransformMatrix(Matrix4f mat) {
@@ -50,6 +52,10 @@ public class StaticShader extends Shader {
 
     public void loadProjectionMatrix(Matrix4f mat) {
         super.loadMat4f(projectionMatrixLocation, mat);
+    }
+
+    public void loadSimulatedLighting(boolean useSimulatedLighting) {
+        super.looadBoolean(useSimulatedLightingLocation, useSimulatedLighting);
     }
 
     public void loadLight(Light light) {
