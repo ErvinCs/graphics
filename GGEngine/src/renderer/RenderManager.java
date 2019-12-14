@@ -21,6 +21,10 @@ public class RenderManager {
     private static final float NEAR_Z = 0.1f;
     private static final float FAR_Z = 1000f;
 
+    private static float RED   = 0.5F;
+    private static float GREEN = 0.5F;
+    private static float BLUE  = 0.5F;
+
     private StaticShader shader = new StaticShader();
     private EntityRenderer entityRenderer;
     // Map the Entities to be rendered foreach TexturedModel
@@ -56,13 +60,15 @@ public class RenderManager {
     public void clear(){
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        GL11.glClearColor(RED, GREEN, BLUE, 1.0f);
     }
 
     // Runs once per frame
     public void draw(Light worldLight, Camera camera) {
         this.clear();
         shader.begin();
+        // Sky
+        shader.loadSkyColor(RED, GREEN, BLUE);
         // World
         shader.loadLight(worldLight);
         shader.loadViewMatrix(camera);
@@ -71,6 +77,7 @@ public class RenderManager {
         shader.end();
         //Terrain
         terrainShader.begin();
+        terrainShader.loadSkyColor(RED, GREEN, BLUE);
         terrainShader.loadLight(worldLight);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrainList);

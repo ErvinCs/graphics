@@ -3,6 +3,7 @@ package shaders;
 import entities.Camera;
 import entities.Light;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import util.MathUtil;
 
 public class StaticShader extends Shader {
@@ -17,6 +18,7 @@ public class StaticShader extends Shader {
     private int shineDampLocation;
     private int reflectivityLocation;
     private int useSimulatedLightingLocation;
+    private int skyColorLocation;
 
     public StaticShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -39,6 +41,7 @@ public class StaticShader extends Shader {
         this.shineDampLocation = super.getUniformLocation("shineDamp");
         this.reflectivityLocation = super.getUniformLocation("reflectivity");
         this.useSimulatedLightingLocation = super.getUniformLocation("useSimulatedLighting");
+        this.skyColorLocation = super.getUniformLocation("skyColor");
     }
 
     public void loadTransformMatrix(Matrix4f mat) {
@@ -66,5 +69,9 @@ public class StaticShader extends Shader {
     public void loadShineAndReflectivity(float shineDamp, float reflectivity) {
         super.loadFloat(shineDampLocation, shineDamp);
         super.loadFloat(reflectivityLocation, reflectivity);
+    }
+
+    public void loadSkyColor(float r, float g, float b) {
+        super.loadVec3(skyColorLocation, new Vector3f(r, g, b));
     }
 }
