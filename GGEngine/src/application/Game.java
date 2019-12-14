@@ -53,32 +53,29 @@ public class Game {
         fernModel.getTexture().setTransparent(true);
         fernModel.getTexture().setUseSimulatedLight(true);
 
-        final int mapSize = 1;
+        //Generate terrain
+        final int mapSize = 2;
         final int xGenLimit = (int)Terrain.SIZE * mapSize;
         final int zGenLimit = (int)Terrain.SIZE * mapSize;
+        List<Terrain> terrainList = new ArrayList<>();
+        for(int i = 0; i < mapSize; i++) {
+            for(int j = 0; j < mapSize; j++) {
+                terrainList.add(new Terrain(i, j, loader, texturePack, blendMap, "heightMap.png"));
+            }
+        }
+
+        //Generate entities
         List<Entity> entityList = new ArrayList<>();
-        Random rand = new Random();
         for(int i = 0; i < 300 * mapSize; i++) {
-            entityList.add(new Entity(treeModel, new Vector3f(rand.nextFloat() * xGenLimit, 0, rand.nextFloat() * zGenLimit),
-                    new Vector3f(0, 0, 0), 3));
-            entityList.add(new Entity(grassModel, new Vector3f(rand.nextFloat() * xGenLimit, 0, rand.nextFloat() * zGenLimit),
-                    new Vector3f(0, 0, 0), 1));
-            entityList.add(new Entity(flowerModel, new Vector3f(rand.nextFloat() * xGenLimit, 0, rand.nextFloat() * zGenLimit),
-                    new Vector3f(0, 0, 0), 0.5f));
-            entityList.add(new Entity(fernModel, new Vector3f(rand.nextFloat() * xGenLimit, 0, rand.nextFloat() * zGenLimit),
-                    new Vector3f(0, 0, 0), 0.8f));
+            entityList.add(new Entity(treeModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 3));
+            entityList.add(new Entity(grassModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 1));
+            entityList.add(new Entity(flowerModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.5f));
+            entityList.add(new Entity(fernModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.8f));
         }
         entityList.add(new Entity(dragonModel, new Vector3f(200, 200, 200), new Vector3f(0, 0, 0), 10));
         entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 200, zGenLimit - 200), new Vector3f(0, 0, 0), 10));
 
         Light sun = new Light(new Vector3f(6000, 4000, 2000), new Vector3f(1f, 1f, 1f));
-
-        List<Terrain> terrainList = new ArrayList<>();
-        for(int i = 0; i < mapSize; i++) {
-            for(int j = 0; j < mapSize; j++) {
-                terrainList.add(new Terrain(i, j, loader, texturePack, blendMap));
-            }
-        }
 
         Camera camera = new Camera();
         System.out.print(camera.toString());
@@ -102,5 +99,21 @@ public class Game {
         renderManager.end();
         loader.delete();
         DisplayManager.closeDisplay();
+    }
+
+    private static Vector3f randGroundedPosition(int xGenLimit, int zGenLimit, List<Terrain> terrainList) {
+        Random rand = new Random();
+        float x = rand.nextFloat() * xGenLimit;
+        float z = rand.nextFloat() * zGenLimit;
+        int lineSize = (int)Math.sqrt(terrainList.size());
+        int terrainIndex = (int)((z / zGenLimit) * lineSize + (x / xGenLimit));
+        Terrain terrain = terrainList.get(terrainIndex);
+        float y = terrain.getTerrainHeight(x, z);
+        return new Vector3f(x, y, z);
+    }
+
+    private static Vector3f randRotation() {
+        Random rand = new Random();
+        return new Vector3f(0, rand.nextFloat() * 360, 0);
     }
 }
