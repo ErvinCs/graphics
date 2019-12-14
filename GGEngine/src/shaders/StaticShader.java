@@ -3,6 +3,7 @@ package shaders;
 import entities.Camera;
 import entities.Light;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import util.MathUtil;
 
@@ -19,6 +20,8 @@ public class StaticShader extends Shader {
     private int reflectivityLocation;
     private int useSimulatedLightingLocation;
     private int skyColorLocation;
+    private int numberOfRowsLocation;
+    private int textureOffsetLocation;
 
     public StaticShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -42,6 +45,8 @@ public class StaticShader extends Shader {
         this.reflectivityLocation = super.getUniformLocation("reflectivity");
         this.useSimulatedLightingLocation = super.getUniformLocation("useSimulatedLighting");
         this.skyColorLocation = super.getUniformLocation("skyColor");
+        this.numberOfRowsLocation = super.getUniformLocation("numberOfRows");
+        this.textureOffsetLocation = super.getUniformLocation("texOffset");
     }
 
     public void loadTransformMatrix(Matrix4f mat) {
@@ -73,5 +78,13 @@ public class StaticShader extends Shader {
 
     public void loadSkyColor(float r, float g, float b) {
         super.loadVec3(skyColorLocation, new Vector3f(r, g, b));
+    }
+
+    public void loadNumberOfRows(int numberOfRows) {
+        super.loadInt(numberOfRowsLocation, numberOfRows);
+    }
+
+    public void loadTexOffset(float xOffset, float yOffset) {
+        super.loadVec2(textureOffsetLocation, new Vector2f(xOffset, yOffset));
     }
 }

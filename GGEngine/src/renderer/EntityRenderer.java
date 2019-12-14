@@ -10,6 +10,8 @@ import shaders.StaticShader;
 import textures.Texture;
 import util.MathUtil;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,7 @@ public class EntityRenderer {
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
         Texture texture = modelTex.getTexture();
+        shader.loadNumberOfRows(texture.getNumberOfRows());
         if (texture.getTransparent()) {
             RenderManager.disableCulling();
         }
@@ -63,6 +66,7 @@ public class EntityRenderer {
     private void loadEntityInstance(Entity entity) {
         Matrix4f transformMatrix = MathUtil.createTransformMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
         shader.loadTransformMatrix(transformMatrix);
+        shader.loadTexOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
     }
 
 

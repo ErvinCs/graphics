@@ -9,11 +9,23 @@ public class Entity {
     private Vector3f rotation;
     private float scale;
 
+    //Which texture in the atlas is used
+    private int textureIndex;
+
     public Entity(TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
         this.model = model;
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
+        this.textureIndex = 0;
+    }
+
+    public Entity(TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+        this.model = model;
+        this.position = position;
+        this.rotation = rotation;
+        this.scale = scale;
+        this.textureIndex = textureIndex;
     }
 
     public void increasePosition(float dx, float dy, float dz) {
@@ -65,5 +77,17 @@ public class Entity {
         this.scale = scale;
     }
 
+    public int getTextureIndex() {
+        return textureIndex;
+    }
 
+    public int getTextureXOffset() {
+        int column = textureIndex % model.getTexture().getNumberOfRows();
+        return column / model.getTexture().getNumberOfRows();
+    }
+
+    public int getTextureYOffset() {
+        int row = textureIndex / model.getTexture().getNumberOfRows();
+        return row / model.getTexture().getNumberOfRows();
+    }
 }

@@ -5,6 +5,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.io.BufferedReader;
@@ -36,7 +37,6 @@ public abstract class Shader {
         GL20.glLinkProgram(shaderID);
         GL20.glValidateProgram(shaderID);
         getAllUniformLocations();
-
     }
 
     protected int getUniformLocation(String uniformName) {
@@ -51,6 +51,10 @@ public abstract class Shader {
     protected void loadInt(int location, int value)
     {
         GL20.glUniform1i(location, value);
+    }
+
+    protected void loadVec2(int location, Vector2f vec) {
+        GL20.glUniform2f(location, vec.x, vec.y);
     }
 
     protected void loadVec3(int location, Vector3f vec) {

@@ -16,6 +16,9 @@ uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
 uniform float useSimulatedLighting;
 
+uniform float numberOfRows;
+uniform vec2 texOffset;
+
 const float fogDensity = 0.005;
 const float fogGradient = 5.0;
 
@@ -25,7 +28,8 @@ void main(void) {
 
     //MVP Matrix
     gl_Position = projectionMatrix * positionRelativeToCamera;
-    o_texCoords = texCoords;
+    //There should be numberOfRows instead of 1 but the textures are not loading for some reason
+    o_texCoords = (texCoords / 1) + texOffset;
 
     vec3 actualNormal = normal;
     if (useSimulatedLighting > 0.5) {

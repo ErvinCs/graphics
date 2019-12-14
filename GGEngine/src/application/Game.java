@@ -4,6 +4,7 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderer.*;
@@ -38,6 +39,8 @@ public class Game {
         TerrainTexture bTex = new TerrainTexture(loader.loadTexture("path.png"));
         TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTex, rTex, gTex, bTex);
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap.png"));
+        Texture fernTextureAtlas = new Texture(loader.loadTexture("fernAtlas.png"));
+        fernTextureAtlas.setNumberOfRows(2);
 
         // Textured Models
         TexturedModel dragonModel = new TexturedModel(dragonModel3D, new Texture(loader.loadTexture("circuits.png")));
@@ -49,9 +52,7 @@ public class Game {
         TexturedModel flowerModel = new TexturedModel(grassModel3D, new Texture(loader.loadTexture("flower.png")));
         flowerModel.getTexture().setTransparent(true);
         flowerModel.getTexture().setUseSimulatedLight(true);
-        TexturedModel fernModel   = new TexturedModel(fernModel3D, new Texture(loader.loadTexture("fern.png")));
-        fernModel.getTexture().setTransparent(true);
-        fernModel.getTexture().setUseSimulatedLight(true);
+        TexturedModel ferModel    = new TexturedModel(fernModel3D, fernTextureAtlas);
 
         //Generate terrain
         final int mapSize = 2;
@@ -66,11 +67,14 @@ public class Game {
 
         //Generate entities
         List<Entity> entityList = new ArrayList<>();
+        Random rand = new Random();
         for(int i = 0; i < 300 * mapSize; i++) {
+            //System.out.println("Index=" + e.getTextureIndex() + ", X-Offset=" + e.getTextureXOffset() + ", Y-Offset=" + e.getTextureYOffset());
             entityList.add(new Entity(treeModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 3));
             entityList.add(new Entity(grassModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 1));
             entityList.add(new Entity(flowerModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.5f));
-            entityList.add(new Entity(fernModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.8f));
+            entityList.add(new Entity(ferModel, rand.nextInt(4), randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.5f));
+
         }
         entityList.add(new Entity(dragonModel, new Vector3f(200, 200, 200), new Vector3f(0, 0, 0), 10));
         entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 200, zGenLimit - 200), new Vector3f(0, 0, 0), 10));
