@@ -16,14 +16,14 @@ uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
 
 const float fogDensity = 0.005;
-const float fogGradient = 4.0;
+const float fogGradient = 5.0;
 
 void main(void) {
     vec4 worldPosition = transformMatrix * vec4(position, 1.0);
     vec4 positionRelativeToCamera = viewMatrix * worldPosition;
 
     gl_Position = projectionMatrix * positionRelativeToCamera;
-    o_texCoords = texCoords * 40.0;
+    o_texCoords = texCoords;
 
     surfaceNormal = (transformMatrix * vec4(normal, 0.0)).xyz;
     vectorTowardsLight = lightPosition - worldPosition.xyz;

@@ -17,7 +17,7 @@ uniform vec3 lightPosition;
 uniform float useSimulatedLighting;
 
 const float fogDensity = 0.005;
-const float fogGradient = 4.0;
+const float fogGradient = 5.0;
 
 void main(void) {
     vec4 worldPosition = transformMatrix * vec4(position, 1.0);

@@ -48,7 +48,7 @@ public class OBJLoader {
                             Float.parseFloat(currLine[2]),
                             Float.parseFloat(currLine[3]));
                     normals.add(normal);
-                } else  if (line.startsWith("v")) {
+                } else if (line.startsWith("v")) {
                     Vector3f vertex = new Vector3f(
                             Float.parseFloat(currLine[1]),
                             Float.parseFloat(currLine[2]),
@@ -61,8 +61,8 @@ public class OBJLoader {
                 }
             }
 
-            while(line != null) {
-                if(!line.startsWith("f")) {
+            while (line != null) {
+                if (!line.startsWith("f")) {
                     line = bufferedReader.readLine();
                     continue;
                 }
@@ -88,13 +88,13 @@ public class OBJLoader {
         indexArray = new int[indices.size()];
 
         int vertexPointer = 0;
-        for(Vector3f vertex : vertices) {
+        for (Vector3f vertex : vertices) {
             vertexArray[vertexPointer++] = vertex.x;
             vertexArray[vertexPointer++] = vertex.y;
             vertexArray[vertexPointer++] = vertex.z;
         }
 
-        for(int i = 0; i < indices.size(); i++) {
+        for (int i = 0; i < indices.size(); i++) {
             indexArray[i] = indices.get(i);
         }
 
@@ -108,11 +108,11 @@ public class OBJLoader {
         indices.add(currentVertexPosition);
 
         Vector2f currentTexture = textures.get(Integer.parseInt(vertexData[1]) - 1);
-        textureArray[currentVertexPosition * 2    ] = currentTexture.x;
+        textureArray[currentVertexPosition * 2] = currentTexture.x;
         textureArray[currentVertexPosition * 2 + 1] = 1 - currentTexture.y;     //Not sure about the 1 - Y
 
         Vector3f currentNormal = normals.get(Integer.parseInt(vertexData[2]) - 1);
-        normalArray[currentVertexPosition * 3    ] = currentNormal.x;
+        normalArray[currentVertexPosition * 3] = currentNormal.x;
         normalArray[currentVertexPosition * 3 + 1] = currentNormal.y;
         normalArray[currentVertexPosition * 3 + 2] = currentNormal.z;
 

@@ -18,6 +18,11 @@ public class TerrainShader extends Shader {
     private int shineDampLocation;
     private int reflectivityLocation;
     private int skyColorLocation;
+    private int backgroundTexLocation;
+    private int rTexLocation;
+    private int gTexLocation;
+    private int bTexLocation;
+    private int blendMapLocation;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -40,6 +45,11 @@ public class TerrainShader extends Shader {
         this.shineDampLocation = super.getUniformLocation("shineDamp");
         this.reflectivityLocation = super.getUniformLocation("reflectivity");
         this.skyColorLocation = super.getUniformLocation("skyColor");
+        this.backgroundTexLocation = super.getUniformLocation("backgroundTex");
+        this.rTexLocation = super.getUniformLocation("rTex");
+        this.gTexLocation = super.getUniformLocation("gTex");
+        this.bTexLocation = super.getUniformLocation("bTex");
+        this.blendMapLocation = super.getUniformLocation("blendMap");
     }
 
     public void loadTransformMatrix(Matrix4f mat) {
@@ -67,5 +77,13 @@ public class TerrainShader extends Shader {
 
     public void loadSkyColor(float r, float g, float b) {
         super.loadVec3(skyColorLocation, new Vector3f(r, g, b));
+    }
+
+    public void loadTextureUnits() {
+        super.loadInt(backgroundTexLocation, 0);
+        super.loadInt(rTexLocation, 1);
+        super.loadInt(gTexLocation, 2);
+        super.loadInt(bTexLocation, 3);
+        super.loadInt(blendMapLocation, 4);
     }
 }

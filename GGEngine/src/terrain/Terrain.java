@@ -2,19 +2,24 @@ package terrain;
 
 import models.Model3D;
 import renderer.ModelLoader;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 import textures.Texture;
 
 public class Terrain {
-    private static final float SIZE = 800;
-    private static final int VERTEX_COUNT = 128;
+    public static final float SIZE = 800;
+    public static final int VERTEX_COUNT = 128;
 
     private float x;
     private float z;
     private Model3D model;
-    private Texture texture;
+    private TerrainTexturePack texturePack;
+    // TEMP - Represent the blendMap as a TerrainTexture instance
+    private TerrainTexture blendMap;
 
-    public Terrain(int gridX, int gridZ, ModelLoader loader, Texture texture) {
-        this.texture = texture;
+    public Terrain(int gridX, int gridZ, ModelLoader loader, TerrainTexturePack texturePack, TerrainTexture blendMap) {
+        this.texturePack = texturePack;
+        this.blendMap = blendMap;
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.model = createTerrain(loader);
@@ -72,7 +77,11 @@ public class Terrain {
         return model;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public TerrainTexturePack getTexturePack() {
+        return texturePack;
+    }
+
+    public TerrainTexture getBlendMap() {
+        return blendMap;
     }
 }
