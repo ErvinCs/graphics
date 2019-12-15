@@ -75,7 +75,7 @@ public class Camera {
             this.roll -= moveSpeed;
         }
 
-        //System.out.println(this.toString());
+        System.out.println(this.toString());
     }
 
     public Vector3f getPosition() {

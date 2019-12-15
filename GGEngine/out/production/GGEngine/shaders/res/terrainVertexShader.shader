@@ -6,14 +6,14 @@ in vec3 normal;
 
 out vec2 o_texCoords;
 out vec3 surfaceNormal;
-out vec3 vectorTowardsLight;
+out vec3 vectorTowardsLight[5];
 out vec3 vectorTowardsCamera;
 out float visibility;
 
 uniform mat4 transformMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform vec3 lightPosition;
+uniform vec3 lightPosition[5];
 
 const float fogDensity = 0.005;
 const float fogGradient = 5.0;
@@ -26,7 +26,9 @@ void main(void) {
     o_texCoords = texCoords;
 
     surfaceNormal = (transformMatrix * vec4(normal, 0.0)).xyz;
-    vectorTowardsLight = lightPosition - worldPosition.xyz;
+    for(int i=0; i<5; i++) {
+         vectorTowardsLight[i] = lightPosition[i] - worldPosition.xyz;
+    }
     vectorTowardsCamera = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 
     float distanceFromCamera = length(positionRelativeToCamera.xyz);

@@ -28,9 +28,10 @@ public class Game {
         // OBJ Models
         Model3D treeModel3D   = OBJLoader.loadObjModel("tree.obj", loader);
         Model3D grassModel3D  = OBJLoader.loadObjModel("grassModel.obj", loader);
-        Model3D fernModel3D   = OBJLoader.loadObjModel("fern.obj", loader);
+        Model3D fernModel3D = OBJLoader.loadObjModel("fern.obj", loader);
         Model3D dragonModel3D = OBJLoader.loadObjModel("dragon.obj", loader);
         Model3D bunnyModel3D  = OBJLoader.loadObjModel("bunny.obj", loader);
+        Model3D lampModel3D   = OBJLoader.loadObjModel("lamp.obj", loader);
 
         // Textures
         TerrainTexture backgroundTex = new TerrainTexture(loader.loadTexture("grassy.png"));
@@ -53,6 +54,9 @@ public class Game {
         flowerModel.getTexture().setTransparent(true);
         flowerModel.getTexture().setUseSimulatedLight(true);
         TexturedModel ferModel    = new TexturedModel(fernModel3D, fernTextureAtlas);
+        ferModel.getTexture().setTransparent(true);
+        ferModel.getTexture().setUseSimulatedLight(true);
+        TexturedModel lampModel = new TexturedModel(lampModel3D, new Texture(loader.loadTexture("lamp.png")));
 
         //Generate terrain
         final int mapSize = 2;
@@ -68,8 +72,7 @@ public class Game {
         //Generate entities
         List<Entity> entityList = new ArrayList<>();
         Random rand = new Random();
-        for(int i = 0; i < 300 * mapSize; i++) {
-            //System.out.println("Index=" + e.getTextureIndex() + ", X-Offset=" + e.getTextureXOffset() + ", Y-Offset=" + e.getTextureYOffset());
+        for(int i = 0; i < 600 * mapSize; i++) {
             entityList.add(new Entity(treeModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 3));
             entityList.add(new Entity(grassModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 1));
             entityList.add(new Entity(flowerModel, randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.5f));
@@ -78,10 +81,24 @@ public class Game {
         }
         entityList.add(new Entity(dragonModel, new Vector3f(200, 200, 200), new Vector3f(0, 0, 0), 10));
         entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 200, zGenLimit - 200), new Vector3f(0, 0, 0), 10));
+        entityList.add(new Entity(lampModel, new Vector3f(100, 0f, 200), new Vector3f(0, 0, 0), 1));
+        entityList.add(new Entity(lampModel, new Vector3f(400, 0, 220), new Vector3f(0, 0, 0), 1));
 
-        Light sun = new Light(new Vector3f(6000, 4000, 2000), new Vector3f(1f, 1f, 1f));
+
+        List<Light> lightList = new ArrayList<>();
+        Light sun = new Light(new Vector3f(6000, 4000, 2000), new Vector3f(0.2f, 0.2f, 0.2f));
+        Light light1 = new Light(new Vector3f(100, 10, 200), new Vector3f(0f, 2.2f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
+        Light light2 = new Light(new Vector3f(400, 10, 220), new Vector3f(2.2f, 0f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
+        Light light3 = new Light(new Vector3f(162, 295, 210), new Vector3f(4f, 0f, 0), new Vector3f(1, 0.002f, 0.001f));
+        Light light4 = new Light(new Vector3f(xGenLimit - 200, 300, zGenLimit - 200), new Vector3f(0f, 0f, 4f), new Vector3f(1, 0.002f, 0.001f));
+        lightList.add(sun);
+        lightList.add(light1);
+        lightList.add(light2);
+        lightList.add(light3);
+        lightList.add(light4);
 
         Camera camera = new Camera();
+        camera.setPosition(new Vector3f(200, 20, 200));
         System.out.print(camera.toString());
         RenderManager renderManager = new RenderManager();
 
@@ -96,7 +113,7 @@ public class Game {
                 renderManager.addTerrain(t);
             }
 
-            renderManager.draw(sun, camera);
+            renderManager.draw(lightList, camera);
             DisplayManager.updateDisplay();
         }
 

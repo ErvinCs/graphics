@@ -64,13 +64,13 @@ public class RenderManager {
     }
 
     // Runs once per frame
-    public void draw(Light worldLight, Camera camera) {
+    public void draw(List<Light> lights, Camera camera) {
         this.clear();
         shader.begin();
         // Sky
         shader.loadSkyColor(RED, GREEN, BLUE);
         // World
-        shader.loadLight(worldLight);
+        shader.loadLights(lights);
         shader.loadViewMatrix(camera);
         // Entities
         entityRenderer.draw(entities);
@@ -78,7 +78,7 @@ public class RenderManager {
         //Terrain
         terrainShader.begin();
         terrainShader.loadSkyColor(RED, GREEN, BLUE);
-        terrainShader.loadLight(worldLight);
+        terrainShader.loadLights(lights);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrainList);
         terrainShader.end();
