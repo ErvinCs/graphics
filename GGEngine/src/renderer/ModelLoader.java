@@ -1,13 +1,16 @@
 package renderer;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
 import models.Model3D;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import textures.TextureData;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -41,6 +44,13 @@ public class ModelLoader {
         return new Model3D(vaoID, indices.length);    // Each vertex has 3 floats
     }
 
+    public Model3D loadToVAO(float[] positions, int dimensions) {
+        int vaoID = createVAO();
+        createVBO(0, dimensions, positions);
+        unbindVAO();
+        return new Model3D(vaoID, positions.length / dimensions);
+    }
+
     public int loadTexture(String filename) {
         Texture texture = null;
         try {
@@ -71,6 +81,26 @@ public class ModelLoader {
         for (int texID : texList) {
             GL11.glDeleteTextures(texID);
         }
+    }
+
+    public int loadCubeMap(String[] textureFiles) {
+        int textureID = GL11.glGenTextures();
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, textureID);
+        for(int i = 0; i < textureFiles.length; i++) {
+            TextureData data = decodeTextureFile("src/skybox/res/" + textureFiles[i]);
+            // Load texture data to each face of the cube map
+            // Cube map int codes are contiguous
+            // Face order: Right, Left, Top, Bottom, Back, Front
+            GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
+                    GL11.GL_RGBA, data.getWidth(), data.getHeight(), 0,
+                    GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
+        }
+        // Set filter parameters
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        texList.add(textureID);
+        return textureID;
     }
 
     /**
@@ -127,5 +157,31 @@ public class ModelLoader {
         buffer.flip();
         return buffer;
 
+    }
+
+    /**
+     * Load an image into a byte buffer and return a TextureData with PNG data
+     * @param fileName - input file
+     * @return TextureData
+     */
+    private TextureData decodeTextureFile(String fileName) {
+        int width = 0;
+        int height = 0;
+        ByteBuffer buffer = null;
+        try {
+            FileInputStream in = new FileInputStream(fileName);
+            PNGDecoder decoder = new PNGDecoder(in);
+            width = decoder.getWidth();
+            height = decoder.getHeight();
+            buffer = ByteBuffer.allocateDirect(4 * width * height);
+            decoder.decode(buffer, width * 4, PNGDecoder.Format.RGBA);
+            buffer.flip();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not load texture: <" + fileName + ">!");
+            System.exit(-1);
+        }
+        return new TextureData(width, height, buffer);
     }
 }

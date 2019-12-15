@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.StaticShader;
 import shaders.TerrainShader;
+import skybox.SkyboxRenderer;
 import terrain.Terrain;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class RenderManager {
     private static final float NEAR_Z = 0.1f;
     private static final float FAR_Z = 1000f;
 
-    private static float RED   = 0.5F;
-    private static float GREEN = 0.5F;
-    private static float BLUE  = 0.5F;
+    private static float RED   = 0.5444f;
+    private static float GREEN = 0.62f;
+    private static float BLUE  = 0.69f;
 
     private StaticShader shader = new StaticShader();
     private EntityRenderer entityRenderer;
@@ -35,11 +36,14 @@ public class RenderManager {
     private TerrainShader terrainShader = new TerrainShader();
     private List<Terrain> terrainList = new ArrayList<>();
 
-    public RenderManager() {
+    private SkyboxRenderer skyboxRenderer;
+
+    public RenderManager(ModelLoader loader) {
         enableCulling();
         createProjectionMatrix();
         entityRenderer = new EntityRenderer(shader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+        skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
     }
 
     public static void enableCulling() {
@@ -82,6 +86,8 @@ public class RenderManager {
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrainList);
         terrainShader.end();
+        // Skybox
+        skyboxRenderer.draw(camera);
         terrainList.clear();
         entities.clear();
     }
