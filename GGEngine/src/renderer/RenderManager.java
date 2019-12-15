@@ -36,14 +36,14 @@ public class RenderManager {
     private TerrainShader terrainShader = new TerrainShader();
     private List<Terrain> terrainList = new ArrayList<>();
 
-    private SkyboxRenderer skyboxRenderer;
+    // private SkyboxRenderer skyboxRenderer;
 
     public RenderManager(ModelLoader loader) {
         enableCulling();
         createProjectionMatrix();
         entityRenderer = new EntityRenderer(shader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
-        skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
+        // skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
     }
 
     public static void enableCulling() {
@@ -87,7 +87,7 @@ public class RenderManager {
         terrainRenderer.render(terrainList);
         terrainShader.end();
         // Skybox
-        skyboxRenderer.draw(camera);
+        // skyboxRenderer.draw(camera);
         terrainList.clear();
         entities.clear();
     }

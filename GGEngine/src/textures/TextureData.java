@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 public class TextureData {
     private int width;
     private int height;
-    // hOLDS IAMGE BYTE DATA
+    // Holds image byte data
     private ByteBuffer buffer;
 
     public TextureData(int width, int height, ByteBuffer buffer) {

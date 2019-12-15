@@ -5,6 +5,11 @@ Computer Graphics Sem5
 ### Lab2 - Z-Buffering
 ### Lab3 - Texture Mapping
 ### Lab4 - OpenGL (GLUT)
-### Final project (3D Game Engine)
-* Problem statement
-* Solving method
+### Project - Game Engine 3D
+* Texturing
+* MipMapping
+* Fog Effect
+* Lighting: World Light & Point Light
+* Terrain Generation 
+* HeightMaps
+

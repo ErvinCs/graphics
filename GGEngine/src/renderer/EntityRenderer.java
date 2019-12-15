@@ -5,13 +5,10 @@ import models.Model3D;
 import models.TexturedModel;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
-import shaders.Shader;
 import shaders.StaticShader;
 import textures.Texture;
 import util.MathUtil;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 

@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class OBJLoader {
     public static Model3D loadObjModel(String filepath, ModelLoader loader) {

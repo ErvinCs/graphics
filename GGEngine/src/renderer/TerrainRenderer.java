@@ -1,8 +1,6 @@
 package renderer;
 
-import entities.Entity;
 import models.Model3D;
-import models.TexturedModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -12,7 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
 import shaders.TerrainShader;
 import terrain.Terrain;
 import textures.TerrainTexturePack;
-import textures.Texture;
 import util.MathUtil;
 
 import java.util.List;
@@ -45,7 +42,6 @@ public class TerrainRenderer {
         GL20.glEnableVertexAttribArray(2);
         bindTextures(terrain);
         shader.loadShineAndReflectivity(1, 0);
-        //TODO - shader.loadShineAndReflectivity(texture.getShineDamp(), texture.getReflectivity());
     }
 
     private void bindTextures(Terrain terrain) {

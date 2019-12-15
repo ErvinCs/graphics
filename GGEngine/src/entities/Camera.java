@@ -1,35 +1,41 @@
 package entities;
 
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
-import java.security.Key;
 
 public class Camera {
     private Vector3f position;      // XYZ
     private float pitch;            // Rise/Fall
     private float yaw;              // Left/Right aiming
+    private float absYaw;
     private float roll;             // Rotation
     private float moveSpeed;
 
-    //Good starting point:
-    //Position: Vector3f[400.0, 5.0, 255.0]
-    //Yaw:      265.0
-    //Pitch:    5.0
-    //Roll:     0.0f
+    //Good starting points:
+    //#1
+    //Position: Vector3f[135, 20,175]
+    //Yaw:      -245.0f
+    //Pitch:     5.0f
+    //Roll:      0.0f
+    //#2
+    //Position: Vector3f[424, 65, 702]
+    //Yaw:      -17.0f
+    //Pitch:     14.0f
+    //Roll:      0.0f
     public Camera() {
-        this.position = new Vector3f(400, 5,255);
-        this.pitch = 5.0f;
-        this.yaw = 265.0f;
+        this.position = new Vector3f(424, 65, 650);
+        this.yaw = -17.0f;
+        this.pitch = 14.0f;
         this.roll = 0.0f;
-        this.moveSpeed = 1.0f;
+        this.moveSpeed = 1.5f;
     }
 
     public Camera(Vector3f position, float pitch, float yaw, float roll, float moveSpeed) {
         this.position = position;
         this.pitch = pitch;
         this.yaw = yaw;
+        this.absYaw = Math.abs(yaw);
         this.roll = roll;
         this.moveSpeed = moveSpeed;
     }
@@ -55,6 +61,7 @@ public class Camera {
         }
 
         // YAW
+        yaw %= 360;
         if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
             yaw += moveSpeed;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
@@ -75,7 +82,7 @@ public class Camera {
             this.roll -= moveSpeed;
         }
 
-        System.out.println(this.toString());
+        //System.out.println(this.toString());
     }
 
     public Vector3f getPosition() {

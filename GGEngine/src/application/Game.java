@@ -79,18 +79,18 @@ public class Game {
             entityList.add(new Entity(ferModel, rand.nextInt(4), randGroundedPosition(xGenLimit, zGenLimit, terrainList), randRotation(), 0.5f));
 
         }
-        entityList.add(new Entity(dragonModel, new Vector3f(200, 70, 200), new Vector3f(0, 0, 0), 10));
-        entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 200, zGenLimit - 200), new Vector3f(0, 0, 0), 10));
+        entityList.add(new Entity(dragonModel, new Vector3f(400f, 3f, 255), new Vector3f(0, 0, 0), 6));
+        entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 20, zGenLimit - 200), new Vector3f(0, 0, 0), 6));
         entityList.add(new Entity(lampModel, new Vector3f(100, 0f, 200), new Vector3f(0, 0, 0), 1));
-        entityList.add(new Entity(lampModel, new Vector3f(400, 0, 220), new Vector3f(0, 0, 0), 1));
+        entityList.add(new Entity(lampModel, new Vector3f(310, 0, 290), new Vector3f(0, 0, 0), 1));
 
 
         List<Light> lightList = new ArrayList<>();
         Light sun = new Light(new Vector3f(6000, 4000, 2000), new Vector3f(0.2f, 0.2f, 0.2f));
-        Light light1 = new Light(new Vector3f(100, 10, 200), new Vector3f(0f, 2.2f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
-        Light light2 = new Light(new Vector3f(400, 10, 220), new Vector3f(2.2f, 0f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
-        Light light3 = new Light(new Vector3f(162, 165, 210), new Vector3f(4f, 0f, 0), new Vector3f(1, 0.002f, 0.001f));
-        Light light4 = new Light(new Vector3f(xGenLimit - 200, 300, zGenLimit - 200), new Vector3f(0f, 0f, 4f), new Vector3f(1, 0.002f, 0.001f));
+        Light light1 = new Light(new Vector3f(100, 10, 200), new Vector3f(2.2f, 0f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
+        Light light2 = new Light(new Vector3f(310, 10, 290), new Vector3f(0f, 2.2f, 2.2f), new Vector3f(1, 0.002f, 0.001f));
+        Light light3 = new Light(new Vector3f(360, 85, 265), new Vector3f(4f, 0f, 0), new Vector3f(1, 0.002f, 0.001f));
+        Light light4 = new Light(new Vector3f(xGenLimit - 200, 110, zGenLimit - 200), new Vector3f(0f, 0f, 4f), new Vector3f(1, 0.002f, 0.001f));
         lightList.add(sun);
         lightList.add(light1);
         lightList.add(light2);
@@ -98,7 +98,6 @@ public class Game {
         lightList.add(light4);
 
         Camera camera = new Camera();
-        camera.setPosition(new Vector3f(250, 20, 200));
         System.out.print(camera.toString());
         RenderManager renderManager = new RenderManager(loader);
 

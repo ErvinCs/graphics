@@ -26,14 +26,6 @@ public class ModelLoader {
     private List<Integer> vboList = new ArrayList<>();
     private List<Integer> texList = new ArrayList<>();
 
-    /**
-     *
-     * @param positions - positions of the model vertices
-     * @param texCoords
-     * @param normals
-     * @param indices
-     * @return Model3D
-     */
     public Model3D loadToVAO(float[] positions, float[] texCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
         bindIndexBuffer(indices);
@@ -68,10 +60,8 @@ public class ModelLoader {
         return textureId;
     }
 
-    /**
-     * Free VAO, VBO, Texture memory
-     */
     public void delete() {
+        // Free VAO, VBO, Texture memory
         for (int vaoID : vaoList) {
             GL30.glDeleteVertexArrays(vaoID);
         }
