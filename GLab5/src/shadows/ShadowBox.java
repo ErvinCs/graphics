@@ -23,7 +23,7 @@ public class ShadowBox {
 	private static final Vector4f FORWARD = new Vector4f(0, 0, -1, 0);
 	// Range from the camera in which objects cast shadows
 	// In terrainVertexShader.shader: shadowDistance should be equal to SHADOW_DISTANCE
-	private static final float SHADOW_DISTANCE = 200;
+	private static final float SHADOW_DISTANCE = 400;
 
 	private float minX, maxX;
 	private float minY, maxY;

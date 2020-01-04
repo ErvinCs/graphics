@@ -19,7 +19,7 @@ uniform mat4 toShadowMapSpace;
 
 const float fogDensity = 0.005;
 const float fogGradient = 5.0;
-const float shadowDistance = 200.0;     // Should be equal to SHADOW_DISTANCE in ShadowBox
+const float shadowDistance = 400.0;     // Should be equal to SHADOW_DISTANCE in ShadowBox
 const float transitionDistance = 10.0;  // Transition period
 
 void main(void) {
@@ -38,8 +38,9 @@ void main(void) {
     vectorTowardsCamera = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 
     float distanceFromCamera = length(positionRelativeToCamera.xyz);
-    visibility = exp(-pow((distanceFromCamera * fogDensity), fogGradient));
-    visibility = clamp(visibility, 0.0, 1.0);
+    visibility = 1;
+    //visibility = exp(-pow((distanceFromCamera * fogDensity), fogGradient));
+    //visibility = clamp(visibility, 0.0, 1.0);
 
     // How far into the transition period the vertex is
     distanceFromCamera = distanceFromCamera - (shadowDistance - transitionDistance);

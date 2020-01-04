@@ -43,6 +43,7 @@ void main(void) {
     vectorTowardsCamera = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 
     float distanceFromCamera = length(positionRelativeToCamera.xyz);
-    visibility = exp(-pow((distanceFromCamera * fogDensity), fogGradient));
-    visibility = clamp(visibility, 0.0, 1.0);
+    visibility = 1;
+    //visibility = exp(-pow((distanceFromCamera * fogDensity), fogGradient));
+    //visibility = clamp(visibility, 0.0, 1.0);
 }
