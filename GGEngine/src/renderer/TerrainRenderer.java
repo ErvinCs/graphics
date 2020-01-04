@@ -25,7 +25,8 @@ public class TerrainRenderer {
         shader.end();
     }
 
-    public void render(List<Terrain> terrains) {
+    public void render(List<Terrain> terrains, Matrix4f toShadowSpaceMat) {
+        shader.loadToShadowSpaceMatrix(toShadowSpaceMat);
         for(Terrain ter : terrains) {
             bindTerrain(ter);
             loadModelMatrix(ter);

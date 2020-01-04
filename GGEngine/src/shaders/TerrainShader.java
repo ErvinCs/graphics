@@ -28,6 +28,8 @@ public class TerrainShader extends Shader {
     private int gTexLocation;
     private int bTexLocation;
     private int blendMapLocation;
+    private int toShadowMapSpaceLocation;
+    private int shadowMapLocation;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -53,6 +55,8 @@ public class TerrainShader extends Shader {
         this.gTexLocation = super.getUniformLocation("gTex");
         this.bTexLocation = super.getUniformLocation("bTex");
         this.blendMapLocation = super.getUniformLocation("blendMap");
+        this.toShadowMapSpaceLocation = super.getUniformLocation("toShadowMapSpace");
+        this.shadowMapLocation = super.getUniformLocation("shadowMap");
 
         lightPositionLocation = new int[MAX_LIGHTS];
         lightColorLocation = new int[MAX_LIGHTS];
@@ -62,6 +66,10 @@ public class TerrainShader extends Shader {
             lightColorLocation[i] = super.getUniformLocation("lightColor[" + i + "]");
             attenuationLocation[i] = super.getUniformLocation("attenuation[" + i +"]");
         }
+    }
+
+    public void loadToShadowSpaceMatrix(Matrix4f matrix) {
+        super.loadMat4f(toShadowMapSpaceLocation, matrix);
     }
 
     public void loadTransformMatrix(Matrix4f mat) {
@@ -106,5 +114,6 @@ public class TerrainShader extends Shader {
         super.loadInt(gTexLocation, 2);
         super.loadInt(bTexLocation, 3);
         super.loadInt(blendMapLocation, 4);
+        super.loadInt(shadowMapLocation, 5);
     }
 }

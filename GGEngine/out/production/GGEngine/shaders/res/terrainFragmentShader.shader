@@ -5,6 +5,7 @@ in vec3 surfaceNormal;
 in vec3 vectorTowardsLight[5];
 in vec3 vectorTowardsCamera;
 in float visibility;
+in vec4 shadowCoords;
 
 out vec4 o_color;
 
@@ -13,6 +14,7 @@ uniform sampler2D rTex;
 uniform sampler2D gTex;
 uniform sampler2D bTex;
 uniform sampler2D blendMap;
+uniform sampler2D shadowMap;
 
 uniform vec3 lightColor[5];
 uniform vec3 attenuation[5];
@@ -21,6 +23,12 @@ uniform float reflectivity;
 uniform vec3 skyColor;
 
 void main(void) {
+    float objectNearestToLight = texture(shadowMap, shadowCoords.xy).r;     // r - stores the depth information
+    float lightFactor = 1.0;
+    if (shadowCoords.z > objectNearestToLight) {        // If the Z of the terrain is behind an object (greater than) then shadow it
+        lightFactor = 1.0 - (shadowCoords.w * 0.4);     // Fade out shadows at a distance
+    }
+
     vec4 blendMapColor = texture(blendMap, o_texCoords);
     float backgroundTexAmount = 1 - (blendMapColor.r + blendMapColor.r + blendMapColor.r);
     vec2 tiledCoords = o_texCoords * 40.0;
@@ -51,7 +59,7 @@ void main(void) {
         totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attenFactor;
         totalSpecular = totalSpecular + (dampFactor * reflectivity * lightColor[i]) / attenFactor;
     }
-    totalDiffuse = max(totalDiffuse, 0.2);
+    totalDiffuse = max(totalDiffuse, 0.2) * lightFactor;
 
     o_color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular, 1.0);
     //Mix object color with skyColor depending on the visibility
