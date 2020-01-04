@@ -2,6 +2,9 @@ package models;
 
 import textures.Texture;
 
+/**
+ * Wraps a Model3D & a Texture.
+ */
 public class TexturedModel {
     private Model3D model;
     private Texture texture;

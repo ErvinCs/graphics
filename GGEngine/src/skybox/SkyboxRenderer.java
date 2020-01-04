@@ -9,6 +9,11 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import renderer.ModelLoader;
 
+/**
+ * Hard coded skybox.
+ * Loads the 6 "faces" of the skybox as a cube and surrounds the Camera entity with it.
+ * The Skybox will be "attached" to the Camera entity and as such follow it at all times, giving the impression of sky.
+ */
 public class SkyboxRenderer {
     // Vertex Positions of the Skybox Cube
     private static final float SIZE = 500f;

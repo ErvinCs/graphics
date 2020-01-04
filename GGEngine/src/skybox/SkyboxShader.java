@@ -6,6 +6,9 @@ import entities.Camera;
 import shaders.Shader;
 import util.MathUtil;
 
+/**
+ * Specialized shader for calculations needed by the Skybox cube
+ */
 public class SkyboxShader extends Shader {
 
     private static final String VERTEX_FILE = "src/skybox/res/skyboxVertexShader.shader";

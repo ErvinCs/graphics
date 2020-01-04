@@ -10,15 +10,10 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
 /**
- * The frame buffer for the shadow pass. This class sets up the depth texture
- * which can be rendered to during the shadow render pass, producing a shadow
- * map.
- * 
- * @author Karl
- *
+ * The frame buffer for the shadow pass.
+ * This class sets up the depth texture which can be rendered to during the shadow render pass, producing a shadow map.
  */
 public class ShadowFrameBuffer {
-
 	private final int WIDTH;
 	private final int HEIGHT;
 	private int fbo;
@@ -52,8 +47,7 @@ public class ShadowFrameBuffer {
 	}
 
 	/**
-	 * Unbinds the frame buffer, setting the default frame buffer as the current
-	 * render target.
+	 * Unbinds the frame buffer, setting the default frame buffer as the current render target.
 	 */
 	protected void unbindFrameBuffer() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
@@ -90,9 +84,8 @@ public class ShadowFrameBuffer {
 	}
 
 	/**
-	 * Creates a frame buffer and binds it so that attachments can be added to
-	 * it. The draw buffer is set to none, indicating that there's no colour
-	 * buffer to be rendered to.
+	 * Creates a frame buffer and binds it so that attachments can be added to it.
+	 * The draw buffer is set to none, indicating that there's no colour buffer to be rendered to.
 	 * 
 	 * @return The newly created frame buffer's ID.
 	 */
@@ -107,12 +100,12 @@ public class ShadowFrameBuffer {
 
 	/**
 	 * Creates a depth buffer texture attachment.
-	 * 
+	 * Note that no color attachments are added, only depth. This is because only the depth buffer the texture is relevant for the shadow map.
+	 *
 	 * @param width - the width of the texture.
 	 * @param height - the height of the texture.
 	 * @return The ID of the depth texture.
 	 */
-	// No color attachments are added, only depth. This is because only the depth buffer the texture is relevant for the shadow map.
 	private static int createDepthBufferAttachment(int width, int height) {
 		int texture = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);

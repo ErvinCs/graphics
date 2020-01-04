@@ -24,12 +24,8 @@ public class ShadowMapEntityRenderer {
 	private ShadowShader shader;
 
 	/**
-	 * @param shader
-	 *            - the simple shader program being used for the shadow render
-	 *            pass.
-	 * @param projectionViewMatrix
-	 *            - the orthographic projection matrix multiplied by the light's
-	 *            "view" matrix.
+	 * @param shader - the shadow shader program being used for the shadow render pass.
+	 * @param projectionViewMatrix - the orthographic projection matrix multiplied by the light's "view" matrix.
 	 */
 	protected ShadowMapEntityRenderer(ShadowShader shader, Matrix4f projectionViewMatrix) {
 		this.shader = shader;
@@ -37,11 +33,10 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Renders entieis to the shadow map. Each model is first bound and then all
-	 * of the entities using that model are rendered to the shadow map.
+	 * Renders entities to the shadow map.
+	 * Binds each model after which all of the entities using that model are rendered to the shadow map.
 	 * 
-	 * @param entities
-	 *            - the entities to be rendered to the shadow map.
+	 * @param entities - the entities to be rendered to the shadow map.
 	 */
 	protected void render(Map<TexturedModel, List<Entity>> entities) {
 		// Bind the VAO to each model
@@ -70,12 +65,10 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Binds a raw model before rendering. Only the attribute 0 is enabled here
-	 * because that is where the positions are stored in the VAO, and only the
-	 * positions are required in the vertex shader.
+	 * Binds a raw model before rendering.
+     * Only enables  attrib0 for the VAO positions & attrib1 for the texture coordinates.
 	 * 
-	 * @param rawModel
-	 *            - the model to be bound.
+	 * @param rawModel - the model to be bound.
 	 */
 	private void bindModel(Model3D rawModel) {
 		GL30.glBindVertexArray(rawModel.getVaoID());
@@ -86,13 +79,12 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Prepares an entity to be rendered. The model matrix is created in the
-	 * usual way and then multiplied with the projection and view matrix (often
-	 * in the past we've done this in the vertex shader) to create the
-	 * mvp-matrix. This is then loaded to the vertex shader as a uniform.
+	 * Prepares an entity to be rendered.
+	 * Creates a model matrix which is then multiplied with the projection and view matrix
+     * to create the mvp-matrix.
+     * Loads the mvp-matrix to the vertex shader as a uniform.
 	 * 
-	 * @param entity
-	 *            - the entity to be prepared for rendering.
+	 * @param entity - the entity to be prepared for rendering.
 	 */
 	private void prepareInstance(Entity entity) {
 		// MVP matrix calculation & loading

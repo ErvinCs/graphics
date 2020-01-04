@@ -3,6 +3,14 @@ package entities;
 import models.TexturedModel;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * Represents an Entity in the game world.
+ * It has a Model3D and a Texture mapped to it in the form of a TexturedModel.
+ * It's transform is determined by the position, rotation & scale fields.
+ * The textureIndex is used to determine which texture to be used from a texture atlas.
+ * (Note that every texture is seen as an atlas, as such, single textures will have a value of 1,
+ *  to represent the 1st - and only - texture)
+ */
 public class Entity {
     private TexturedModel model;
     private Vector3f position;

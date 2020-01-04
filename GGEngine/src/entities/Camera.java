@@ -3,7 +3,9 @@ package entities;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
-
+/**
+ * The Camera entity (currently attached to the player) whose parameters are used in matrix calculation.
+ */
 public class Camera {
     private Vector3f position;      // XYZ
     private float pitch;            // Rise/Fall
@@ -40,6 +42,14 @@ public class Camera {
         this.moveSpeed = moveSpeed;
     }
 
+    /**
+     * Handles the movement input for the camera entity.
+     * Z-Axis Movement: W, S
+     * X-Axis Movement: A, D
+     * Y-Axis Movement: Z, C
+     * Rotation:        Q, E
+     * Pitch:           X. V
+     */
     public void move() {
         // Z
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
@@ -119,10 +129,6 @@ public class Camera {
 
     @Override
     public String toString() {
-        //System.out.println();
-        //System.out.println();
-        //System.out.println();
-        //System.out.println();
         return  "Camera: " + '\n' +
                 "\tPosition: " + position.toString() + '\n' +
                 "\tYaw: " + yaw + '\n' +
