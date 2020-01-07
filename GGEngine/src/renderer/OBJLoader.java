@@ -15,7 +15,7 @@ public class OBJLoader {
     public static Model3D loadObjModel(String filepath, ModelLoader loader) {
         FileReader reader = null;
         try {
-            reader = new FileReader(new File("src/models/res/" + filepath));
+            reader = new FileReader(new File("res/models/" + filepath));
         } catch (FileNotFoundException ex) {
             System.err.println("Could not load OBJ file!");
             ex.printStackTrace();

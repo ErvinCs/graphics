@@ -46,7 +46,7 @@ public class ModelLoader {
     public int loadTexture(String filename) {
         Texture texture = null;
         try {
-        texture = TextureLoader.getTexture("PNG", new FileInputStream("src/textures/res/" + filename));
+        texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + filename));
         // When the object is rendered at a smaller dimension than the texture, lower the texture size
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);

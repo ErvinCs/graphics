@@ -12,8 +12,8 @@ import java.util.List;
 public class StaticShader extends Shader {
     private static final int MAX_LIGHTS = 5;
 
-    private static final String VERTEX_FILE = "src/shaders/res/vertexShader.shader";
-    private static final String FRAGMENT_FILE = "src/shaders/res/fragmentShader.shader";
+    private static final String VERTEX_FILE = "res/shaders/vertexShader.shader";
+    private static final String FRAGMENT_FILE = "res/shaders/fragmentShader.shader";
 
     private int transformMatrixLocation;
     private int projectionMatrixLocation;
