@@ -80,6 +80,7 @@ public class Game {
 
         }
         Entity dragonEntity = new Entity(dragonModel, new Vector3f(400f, 3f, 255), new Vector3f(0, 0, 0), 6);
+        entityList.add(dragonEntity);
         entityList.add(new Entity(bunnyModel, new Vector3f(xGenLimit - 200, 20, zGenLimit - 200), new Vector3f(0, 0, 0), 6));
         entityList.add(new Entity(lampModel, new Vector3f(100, 0f, 200), new Vector3f(0, 0, 0), 1));
         entityList.add(new Entity(lampModel, new Vector3f(310, 0, 290), new Vector3f(0, 0, 0), 1));
@@ -110,9 +111,9 @@ public class Game {
             for(Entity e : entityList) {
                 renderManager.addEntity(e);
             }
+
             dragonEntity.increaseRotation(0, step, 0);
             step += 0.001f;
-            renderManager.addEntity(dragonEntity);
 
             for(Terrain t : terrainList) {
                 renderManager.addTerrain(t);
