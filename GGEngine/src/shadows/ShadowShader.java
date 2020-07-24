@@ -8,8 +8,8 @@ import shaders.Shader;
  * Specialized Shader for Shadow calculations.
  */
 public class ShadowShader extends Shader {
-	private static final String VERTEX_FILE = "src/shaders/res/shadowVertexShader.shader";
-	private static final String FRAGMENT_FILE = "src/shaders/res/shadowFragmentShader.shader";
+	private static final String VERTEX_FILE = "res/shaders/shadowVertexShader.shader";
+	private static final String FRAGMENT_FILE = "res/shaders/shadowFragmentShader.shader";
 	
 	private int location_mvpMatrix;
 

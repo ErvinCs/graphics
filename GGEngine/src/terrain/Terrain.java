@@ -67,7 +67,7 @@ public class Terrain {
     private Model3D createTerrain(ModelLoader loader, String heightMapFile) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("src/terrain/res/" + heightMapFile));
+            image = ImageIO.read(new File("res/terrain/" + heightMapFile));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

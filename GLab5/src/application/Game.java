@@ -56,18 +56,18 @@ public class Game {
 
         //Generate entities
         List<Entity> entityList = new ArrayList<>();
-        Entity dragonEntity = new Entity(dragonModel, new Vector3f(600f, 20f, 430f), new Vector3f(0, 0, 0), 6);
+        //Entity dragonEntity = new Entity(dragonModel, new Vector3f(600f, 20f, 430f), new Vector3f(0, 0, 0), 6);
         Entity bunnyEntity = new Entity(bunnyModel, new Vector3f(200f, 20f, 430f), new Vector3f(0, 0, 0), 6);
-        entityList.add(dragonEntity);
+        //entityList.add(dragonEntity);
         entityList.add(bunnyEntity);
-        entityList.add(new Entity(lampModel, new Vector3f(420f, 22f, 430f), new Vector3f(0, 0, 0), 1));
+        entityList.add(new Entity(lampModel, new Vector3f(420f, 22f, 520f), new Vector3f(0, 0, 0), 1));
 
 
         List<Light> lightList = new ArrayList<>();
         Light sun = new Light(new Vector3f(10000, 10000, 10000), new Vector3f(0.8f, 0.8f, 0.8f));
         Light light1 = new Light(new Vector3f( 610f, 35f, 430f), new Vector3f(0f, 0f, 4f), new Vector3f(1, 0.002f, 0.001f));
         Light light2 = new Light(new Vector3f(200f, 80f, 430f), new Vector3f(0f, 4f, 0f), new Vector3f(1, 0.002f, 0.001f));
-        Light light3 = new Light(new Vector3f(420f, 40f, 430f), new Vector3f(4f, 0f, 0), new Vector3f(1, 0.002f, 0.001f));
+        Light light3 = new Light(new Vector3f(420f, 40f, 520f), new Vector3f(4f, 0f, 0), new Vector3f(1, 0.002f, 0.001f));
         lightList.add(sun);
         lightList.add(light1);
         lightList.add(light2);
@@ -77,7 +77,11 @@ public class Game {
         System.out.print(camera.toString());
         RenderManager renderManager = new RenderManager(loader, camera);
 
-        float step = 0.001f;
+        float yRotStep = 0.1f;
+        float xMoveStep = 0.5f;
+        float xUpperBound = 700;
+        float xLowerBound = 100;
+        boolean direction = true;
         while(!Display.isCloseRequested()) {
             camera.move();
 
@@ -87,8 +91,19 @@ public class Game {
                 renderManager.addEntity(e);
             }
 
-            dragonEntity.increaseRotation(0, step, 0);
-            step += 0.001f;
+            if (bunnyEntity.getPosition().x >= xUpperBound && direction) {
+                direction = false;
+            } else if (bunnyEntity.getPosition().x <= xLowerBound && !direction) {
+                direction = true;
+            }
+
+            if (direction) {
+                bunnyEntity.increasePosition(xMoveStep, 0, 0);
+            } else {
+                bunnyEntity.increasePosition(-xMoveStep, 0, 0);
+            }
+
+            bunnyEntity.increaseRotation(0, yRotStep, 0);
 
             for(Terrain t : terrainList) {
                 renderManager.addTerrain(t);
