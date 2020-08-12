@@ -4,7 +4,7 @@
 ### Lab2 - Z-Buffering
 ### Lab3 - Texture Mapping
 ### Lab4 - OpenGL (GLUT)
-### Project - Game Engine 3D
+### GGEngine - 3D Game Engine
 * Texturing
 * MipMapping
 * Fog Effect
@@ -15,4 +15,4 @@
 
 ![](ggengineproject.gif)
 
-The current version of the 3D Game Engine is available <a href="https://github.com/ErvinCs/GGEngine">here!</a>
+The current version of the GGEngine is available <a href="https://github.com/ErvinCs/GGEngine">here!</a>
