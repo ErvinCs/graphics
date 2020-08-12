@@ -1,5 +1,4 @@
 # Graphics Programming
-Computer Graphics Sem5
 
 ### Lab1 - 2D Graph
 ### Lab2 - Z-Buffering
@@ -16,4 +15,4 @@ Computer Graphics Sem5
 
 ![](ggengineproject.gif)
 
-The current version of the 3D Game Engine is available <a href="https://github.com/ErvinCs/PROJECT_NAME_HERE">here!</a>
+The current version of the 3D Game Engine is available <a href="https://github.com/ErvinCs/GGEngine">here!</a>
